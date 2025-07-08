@@ -214,11 +214,37 @@
                 <a href="#premium" class="text-gray-300 hover:text-purple-400 transition">Покупка</a>
                 <a href="#faq" class="text-gray-300 hover:text-purple-400 transition">FAQ</a>
             </nav>
-            <button class="md:hidden text-gray-300 hover:text-purple-400">
+            <button id="mobile-menu-button" class="md:hidden text-gray-300 hover:text-purple-400">
                 <i class="fas fa-bars text-2xl"></i>
             </button>
         </div>
     </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg hidden opacity-0 transition-all duration-300">
+        <div class="container mx-auto px-4 py-20 h-full flex flex-col">
+            <div class="flex justify-end mb-10">
+                <button id="close-menu" class="text-gray-300 hover:text-purple-400 text-3xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="flex flex-col space-y-8 text-center">
+                <a href="#features" class="text-2xl text-gray-300 hover:text-purple-400 transition py-2">Возможности</a>
+                <a href="#modules" class="text-2xl text-gray-300 hover:text-purple-400 transition py-2">Модули</a>
+                <a href="#download" class="text-2xl text-gray-300 hover:text-purple-400 transition py-2">Скачать</a>
+                <a href="#premium" class="text-2xl text-gray-300 hover:text-purple-400 transition py-2">Покупка</a>
+                <a href="#faq" class="text-2xl text-gray-300 hover:text-purple-400 transition py-2">FAQ</a>
+            </nav>
+            <div class="mt-auto pt-10 text-center">
+                <p class="text-gray-400 mb-4">FlowCross Launcher</p>
+                <div class="flex justify-center space-x-4">
+                    <a href="https://t.me/FlowCross" class="text-gray-300 hover:text-blue-400 text-xl">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="py-20 px-4 sm:px-10 lg:px-20">
@@ -817,9 +843,36 @@
             });
         });
         
-        // Mobile menu toggle (placeholder)
-        document.querySelector('button.md\\:hidden').addEventListener('click', () => {
-            alert('Мобильное меню будет реализовано в будущих версиях');
+        // Mobile menu toggle
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const closeMenuButton = document.getElementById('close-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.remove('hidden');
+            setTimeout(() => {
+                mobileMenu.classList.remove('opacity-0');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        });
+        
+        closeMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.add('opacity-0');
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300);
+        });
+        
+        // Close menu when clicking on links
+        document.querySelectorAll('#mobile-menu nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('opacity-0');
+                setTimeout(() => {
+                    mobileMenu.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }, 300);
+            });
         });
 
         // Cursor particles
