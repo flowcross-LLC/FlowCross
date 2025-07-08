@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowCross - Minecraft Launcher</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f0f13;
+            color: #e2e2e2;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #8b5cf6, #c084fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 8px rgba(139, 92, 246, 0.4);
+        }
+        
+        .download-btn {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+        
+        .windows-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .download-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .download-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .windows-card:hover {
+            box-shadow: 0 8px 15px rgba(0, 164, 239, 0.15);
+        }
+        
+        .macos-card:hover {
+            box-shadow: 0 8px 15px rgba(160, 160, 160, 0.15);
+        }
+        
+        .linux-card:hover {
+            box-shadow: 0 8px 15px rgba(244, 180, 0, 0.15);
+        }
+        
+        .fa-windows.windows-icon:hover {
+            transform: scale(1.1);
+            text-shadow: 0 0 12px rgba(0, 164, 239, 0.8);
+        }
+        
+        .fa-apple.windows-icon:hover {
+            transform: scale(1.1);
+            text-shadow: 0 0 12px rgba(160, 160, 160, 0.8);
+        }
+        
+        .fa-linux.windows-icon:hover {
+            transform: scale(1.1);
+            text-shadow: 0 0 12px rgba(244, 180, 0, 0.8);
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+            background: rgba(30, 30, 40, 0.5);
+            backdrop-filter: blur(10px);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(50, 50, 60, 0.6);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="py-6 px-4 sm:px-10 lg:px-20">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 rounded-lg bg-purple-600 flex items-center justify-center">
+                    <i class="fas fa-gamepad text-white text-xl"></i>
+                </div>
+                <h1 class="text-2xl font-bold gradient-text">FlowCross</h1>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#features" class="text-gray-300 hover:text-purple-400 transition">Возможности</a>
+                <a href="#download" class="text-gray-300 hover:text-purple-400 transition">Скачать</a>
+                <a href="#faq" class="text-gray-300 hover:text-purple-400 transition">FAQ</a>
+            </nav>
+            <button class="md:hidden text-gray-300 hover:text-purple-400">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-20 px-4 sm:px-10 lg:px-20">
+        <div class="container mx-auto flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                    Новый уровень игры <span class="gradient-text">в Minecraft</span>
+                </h2>
+                <p class="text-lg text-gray-400 mb-8 max-w-lg">
+                    FlowCross - это современный лаунчер с уникальными возможностями, высокой производительностью и стильным дизайном.
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="#download" class="download-btn bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-8 rounded-lg text-center">
+                        <i class="fas fa-download mr-2"></i> Скачать сейчас
+                    </a>
+                    <a href="#features" class="border border-purple-600 text-purple-400 hover:bg-purple-900/30 font-semibold py-3 px-8 rounded-lg text-center transition">
+                        <i class="fas fa-list-ul mr-2"></i> Возможности
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-4 sm:px-10 lg:px-20 bg-gray-900/50">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Почему <span class="gradient-text">FlowCross?</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Инновационные возможности, которые делают игру удобнее</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card p-6 rounded-xl border border-gray-800 text-center">
+                    <div class="w-12 h-12 rounded-lg bg-purple-600/20 flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-bolt text-purple-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Молниеносная скорость</h3>
+                    <p class="text-gray-400">Оптимизированный код обеспечивает быстрый запуск игры и минимальное потребление ресурсов.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card p-6 rounded-xl border border-gray-800 text-center">
+                    <div class="w-12 h-12 rounded-lg bg-purple-600/20 flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-palette text-purple-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Кастомизация</h3>
+                    <p class="text-gray-400">Множество тем и настроек внешнего вида под ваш стиль.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card p-6 rounded-xl border border-gray-800 text-center">
+                    <div class="w-12 h-12 rounded-lg bg-purple-600/20 flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-shield-alt text-purple-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Безопасность</h3>
+                    <p class="text-gray-400">Защита ваших данных и аккаунтов на первом месте.</p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="feature-card p-6 rounded-xl border border-gray-800 text-center">
+                    <div class="w-12 h-12 rounded-lg bg-purple-600/20 flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-cloud-download-alt text-purple-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Авто-обновления</h3>
+                    <p class="text-gray-400">Всегда последняя версия без лишних действий.</p>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="feature-card p-6 rounded-xl border border-gray-800 text-center">
+                    <div class="w-12 h-12 rounded-lg bg-purple-600/20 flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-users text-purple-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Мультиаккаунт</h3>
+                    <p class="text-gray-400">Удобное переключение между несколькими аккаунтами Minecraft.</p>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="feature-card p-6 rounded-xl border border-gray-800 text-center">
+                    <div class="w-12 h-12 rounded-lg bg-purple-600/20 flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-cubes text-purple-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Модпаки</h3>
+                    <p class="text-gray-400">Встроенная библиотека популярных модпаков с одним кликом установки.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="py-20 px-4 sm:px-10 lg:px-20">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Скачать <span class="gradient-text">FlowCross</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Выберите версию для вашей операционной системы</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <!-- Windows -->
+                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-blue-400 hover:border-opacity-50 download-card windows-card">
+                    <i class="fab fa-windows text-5xl text-blue-400 mb-4 windows-icon"></i>
+                    <h3 class="text-xl font-semibold mb-2">Windows</h3>
+                    <p class="text-gray-400 text-center mb-6">Windows 11/10 (64-bit)</p>
+                    <a href="#" class="download-btn bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg w-full text-center">
+                        <i class="fas fa-download mr-2"></i> Скачать .exe
+                    </a>
+                </div>
+                
+                <!-- macOS -->
+                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-gray-300 hover:border-opacity-50 download-card macos-card">
+                    <i class="fab fa-apple text-5xl text-gray-300 mb-4 windows-icon"></i>
+                    <h3 class="text-xl font-semibold mb-2">macOS</h3>
+                    <p class="text-gray-400 text-center mb-6">10.14+ (Intel/Apple Silicon)</p>
+                    <a href="#" class="download-btn bg-gray-600 cursor-not-allowed text-gray-400 font-semibold py-3 px-6 rounded-lg w-full text-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
+                        <i class="fas fa-download mr-2"></i> Скоро (macOS)
+                    </a>
+                </div>
+                
+                <!-- Linux -->
+                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-yellow-400 hover:border-opacity-50 download-card linux-card">
+                    <i class="fab fa-linux text-5xl text-yellow-400 mb-4 windows-icon"></i>
+                    <h3 class="text-xl font-semibold mb-2">Linux</h3>
+                    <p class="text-gray-400 text-center mb-6">Debian, Ubuntu, Fedora</p>
+                    <a href="#" class="download-btn bg-gray-600 cursor-not-allowed text-gray-400 font-semibold py-3 px-6 rounded-lg w-full text-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
+                        <i class="fas fa-download mr-2"></i> Скоро (Linux)
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mt-12 bg-gray-800/30 rounded-xl p-6 max-w-4xl mx-auto border border-gray-700">
+                <h3 class="text-xl font-semibold mb-4 text-center">Другие способы установки</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <a href="#" class="bg-gray-700/50 hover:bg-gray-700/70 text-gray-300 font-medium py-2 px-4 rounded-lg text-center transition">
+                        <i class="fab fa-github mr-2"></i> Исходный код
+                    </a>
+                    <a href="#" class="bg-gray-700/50 cursor-not-allowed text-gray-500 font-medium py-2 px-4 rounded-lg text-center">
+                        <i class="fas fa-terminal mr-2"></i> CLI (скоро)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 px-4 sm:px-10 lg:px-20 bg-gray-900/50">
+        <div class="container mx-auto max-w-4xl">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Частые <span class="gradient-text">вопросы</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Не нашли ответ? Напишите нам в поддержку</p>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="bg-gray-800/50 rounded-xl p-5 border border-gray-700">
+                    <button class="faq-question flex justify-between items-center w-full text-left">
+                        <h3 class="font-medium text-lg">FlowCross - это безопасно?</h3>
+                        <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer mt-3 text-gray-400 hidden">
+                        <p>Да, FlowCross полностью безопасен. Мы не храним ваши данные для входа и не имеем доступа к вашему аккаунту Minecraft. Лаунчер имеет открытый исходный код, который может проверить любой желающий.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="bg-gray-800/50 rounded-xl p-5 border border-gray-700">
+                    <button class="faq-question flex justify-between items-center w-full text-left">
+                        <h3 class="font-medium text-lg">Какие версии Minecraft поддерживаются?</h3>
+                        <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer mt-3 text-gray-400 hidden">
+                        <p>FlowCross поддерживает все версии Minecraft от классических до самых новых, включая snapshots. Вы можете легко переключаться между версиями в настройках лаунчера.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="bg-gray-800/50 rounded-xl p-5 border border-gray-700">
+                    <button class="faq-question flex justify-between items-center w-full text-left">
+                        <h3 class="font-medium text-lg">Как установить моды?</h3>
+                        <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer mt-3 text-gray-400 hidden">
+                        <p>FlowCross имеет встроенный менеджер модов. Просто перейдите в раздел "Моды", выберите нужные из каталога или добавьте свои файлы .jar. Лаунчер автоматически позаботится о совместимости версий.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div class="bg-gray-800/50 rounded-xl p-5 border border-gray-700">
+                    <button class="faq-question flex justify-between items-center w-full text-left">
+                        <h3 class="font-medium text-lg">Есть ли мобильная версия?</h3>
+                        <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer mt-3 text-gray-400 hidden">
+                        <p>В настоящее время FlowCross доступен только для Windows. Мобильная версия находится в разработке и будет выпущена в ближайшем будущем.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 5 -->
+                <div class="bg-gray-800/50 rounded-xl p-5 border border-gray-700">
+                    <button class="faq-question flex justify-between items-center w-full text-left">
+                        <h3 class="font-medium text-lg">Как обновить лаунчер?</h3>
+                        <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer mt-3 text-gray-400 hidden">
+                        <p>FlowCross автоматически проверяет обновления при запуске. Если доступна новая версия, вам будет предложено её установить. Также вы можете вручную проверить обновления в настройках.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 sm:px-10 lg:px-20 bg-gray-900">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-6 md:mb-0">
+                    <div class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center">
+                        <i class="fas fa-gamepad text-white"></i>
+                    </div>
+                    <h2 class="text-xl font-bold gradient-text" style="text-shadow: 0 0 5px rgba(139, 92, 246, 0.3)">FlowCross</h2>
+                </div>
+                
+                <div class="text-gray-500 text-sm">
+                    &copy; 2025 FlowCross LLC. Все права защищены.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const answer = button.nextElementSibling;
+                const icon = button.querySelector('i');
+                
+                // Toggle answer visibility
+                answer.classList.toggle('hidden');
+                
+                // Rotate icon
+                icon.classList.toggle('rotate-180');
+                
+                // Close other open answers
+                document.querySelectorAll('.faq-question').forEach(otherButton => {
+                    if (otherButton !== button) {
+                        otherButton.nextElementSibling.classList.add('hidden');
+                        otherButton.querySelector('i').classList.remove('rotate-180');
+                    }
+                });
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Mobile menu toggle (placeholder)
+        document.querySelector('button.md\\:hidden').addEventListener('click', () => {
+            alert('Мобильное меню будет реализовано в будущих версиях');
+        });
+    </script>
+</body>
+</html>
