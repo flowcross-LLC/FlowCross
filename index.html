@@ -90,32 +90,56 @@
         .windows-card:hover {
             box-shadow: 0 8px 15px rgba(0, 164, 239, 0.3);
             border-color: rgba(0, 164, 239, 0.7);
-            background: rgba(219, 219, 219, 0.62);
-            opacity: 0.9;
+            background: rgba(219, 219, 219, 0.85);
+            opacity: 1;
+        }
+        
+        .windows-card:hover .download-btn {
+            box-shadow: 0 4px 15px rgba(0, 120, 215, 0.5) !important;
+        }
+        
+        .windows-card:hover .fa-windows {
+            transform: scale(1.2);
+            text-shadow: 0 0 20px rgba(0, 164, 239, 0.9);
+            color: rgba(0, 164, 239, 0.9);
+            transition: all 0.3s ease;
         }
         
         .macos-card:hover {
             box-shadow: 0 8px 15px rgba(160, 160, 160, 0.15);
         }
         
+        .macos-card:hover .fa-apple {
+            transform: scale(1.2);
+            text-shadow: 0 0 20px rgba(160, 160, 160, 0.8);
+            transition: all 0.3s ease;
+        }
+        
         .linux-card:hover {
             box-shadow: 0 8px 15px rgba(244, 180, 0, 0.15);
         }
         
-        .fa-windows.windows-icon:hover {
-            transform: scale(1.1);
-            text-shadow: 0 0 15px rgba(0, 164, 239, 0.9);
-            color: rgba(0, 164, 239, 0.9);
+        .linux-card:hover .fa-linux {
+            transform: scale(1.2);
+            text-shadow: 0 0 20px rgba(244, 180, 0, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        .android-card:hover {
+            box-shadow: 0 8px 15px rgba(60, 185, 60, 0.3);
+            border-color: rgba(60, 185, 60, 0.7);
+        }
+
+        .android-card:hover .fa-android {
+            transform: scale(1.2);
+            text-shadow: 0 0 20px rgba(60, 185, 60, 0.9);
+            transition: all 0.3s ease;
         }
         
-        .fa-apple.windows-icon:hover {
-            transform: scale(1.1);
-            text-shadow: 0 0 12px rgba(160, 160, 160, 0.8);
-        }
-        
-        .fa-linux.windows-icon:hover {
-            transform: scale(1.1);
-            text-shadow: 0 0 12px rgba(244, 180, 0, 0.8);
+        .fa-windows.windows-icon,
+        .fa-apple.windows-icon,
+        .fa-linux.windows-icon {
+            transition: all 0.3s ease;
         }
         
         .feature-card {
@@ -126,8 +150,8 @@
         
         .feature-card:hover {
             transform: translateY(-5px);
-            background: rgba(50, 50, 60, 0.8);
-            backdrop-filter: blur(8px);
+            background: rgba(30, 30, 40, 0.3);
+            backdrop-filter: blur(5px);
         }
 
         .download-card {
@@ -137,8 +161,8 @@
         }
         
         .download-card:hover {
-            background: rgba(50, 50, 60, 0.8);
-            backdrop-filter: blur(8px);
+            background: rgba(30, 30, 40, 0.3);
+            backdrop-filter: blur(5px);
         }
 
         .faq-answer {
@@ -242,6 +266,7 @@
                         <i class="fab fa-telegram"></i>
                     </a>
                 </div>
+                
             </div>
         </div>
     </div>
@@ -343,13 +368,13 @@
                 <p class="text-gray-400 max-w-2xl mx-auto">Разблокируйте новые возможности с FlowCross </p>
             </div>
             
-            <div class="bg-gray-800/50 rounded-xl p-8 border border-gray-500/30 backdrop-blur-sm hover:bg-gray-800/70 transition-all duration-300">
+            <div class="bg-black-800/25 rounded-xl p-8 border border-purple-500/15 backdrop-blur-sm hover:bg-gray-700/15 transition-all duration-300">
                 <div class="flex flex-col md:flex-row items-center justify-between">
                     <div class="mb-6 md:mb-0">
                         <h3 class="text-xl font-bold mb-2">FlowCross client</h3>
                         <p class="text-gray-400">Доступ к лаунчеру и всем прелестям игры :)</p>
                     </div>
-                    <a href="https://www.donationalerts.com/r/itzneverr" target="_blank" class="bg-gray-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 inline-block text-center">
+                    <a href="https://www.donationalerts.com/r/itzneverr" target="_blank" class="bg-white-200 hover:bg-purple-600/50 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 inline-block text-center">
                         <i class="fas fa-key mr-2"></i> Купить за 2$
                     </a>
                 </div>
@@ -447,13 +472,13 @@
                 <p class="text-gray-400 max-w-2xl mx-auto">Выберите версию для вашей операционной системы</p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
                 <!-- Windows -->
-                <div class="bg-black-800/50 rounded-xl p-6 border border-blue-700 flex flex-col items-center transition-all duration-100 hover:border-blue-100 hover:border-opacity-20 download-card windows-card backdrop-blur-sm">
+                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-blue-500 hover:border-opacity-50 download-card windows-card backdrop-blur-sm">
                     <i class="fab fa-windows text-5xl text-blue-400 mb-4 windows-icon"></i>
                     <h3 class="text-xl font-semibold mb-2">Windows</h3>
                     <p class="text-gray-400 text-center mb-6">Windows 11/10 (64-bit)</p>
-                    <a href="https://cloud.mail.ru/public/Njnu/GKv3dTwrK" class="download-btn bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg w-full text-center">
+                    <a href="https://cloud.mail.ru/public/Njnu/GKv3dTwrK" class="download-btn bg-gray-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg w-full text-center transition-all duration-300 h-[48px] flex items-center justify-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
                         <i class="fas fa-download mr-2"></i> Скачать .exe
                     </a>
                 </div>
@@ -462,9 +487,9 @@
                 <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-gray-300 hover:border-opacity-50 download-card macos-card backdrop-blur-sm">
                     <i class="fab fa-apple text-5xl text-gray-300 mb-4 windows-icon"></i>
                     <h3 class="text-xl font-semibold mb-2">macOS</h3>
-                    <p class="text-gray-400 text-center mb-6">10.14+ (Intel/Apple Silicon)</p>
-                    <a href="#" class="download-btn bg-gray-600 cursor-not-allowed text-gray-400 font-semibold py-3 px-6 rounded-lg w-full text-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
-                        <i class="fas fa-download mr-2"></i> Скоро (macOS)
+                    <p class="text-gray-400 text-center mb-6">macOS 14+</p>
+                    <a href="#" class="download-btn bg-gray-600 cursor-not-allowed text-gray-400 font-semibold py-3 px-6 rounded-lg w-full text-center h-[48px] flex items-center justify-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
+                        <i class="fas fa-download mr-2"></i> Скоро
                     </a>
                 </div>
                 
@@ -473,8 +498,18 @@
                     <i class="fab fa-linux text-5xl text-yellow-400 mb-4 windows-icon"></i>
                     <h3 class="text-xl font-semibold mb-2">Linux</h3>
                     <p class="text-gray-400 text-center mb-6">Debian, Ubuntu, Fedora</p>
-                    <a href="#" class="download-btn bg-gray-600 cursor-not-allowed text-gray-400 font-semibold py-3 px-6 rounded-lg w-full text-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
-                        <i class="fas fa-download mr-2"></i> Скоро (Linux)
+                    <a href="#" class="download-btn bg-gray-600 cursor-not-allowed text-gray-400 font-semibold py-3 px-6 rounded-lg w-full text-center h-[48px] flex items-center justify-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
+                        <i class="fas fa-download mr-2"></i> Скоро
+                    </a>
+                </div>
+
+                <!-- Android -->
+                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-green-500 hover:border-opacity-50 download-card android-card backdrop-blur-sm">
+                    <i class="fab fa-android text-5xl text-green-400 mb-4 windows-icon"></i>
+                    <h3 class="text-xl font-semibold mb-2">Android</h3>
+                    <p class="text-gray-400 text-center mb-6">Android 12+</p>
+                    <a href="#" class="download-btn bg-gray-600 cursor-not-allowed text-gray-400 font-semibold py-3 px-6 rounded-lg w-full text-center h-[48px] flex items-center justify-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
+                        <i class="fas fa-download mr-2"></i> Скоро
                     </a>
                 </div>
             </div>
@@ -594,10 +629,11 @@
                     <h2 class="text-xl font-bold gradient-text" style="text-shadow: 0 0 5px rgba(139, 92, 246, 0.3)">FlowCross</h2>
                 </div>
                 
-                <div class="flex items-center space-x-4">
+                <div class="flex flex-col items-center space-y-2">
                     <div class="text-gray-500 text-sm">
                         &copy; 2025 FlowCross LLC. Все права защищены.
                     </div>
+                    <div class="text-gray-400 text-xs">v1.0.3</div>
                     <a href="https://t.me/FlowCross" class="text-gray-400 hover:text-blue-400 transition">
                         <i class="fab fa-telegram text-lg"></i>
                     </a>
