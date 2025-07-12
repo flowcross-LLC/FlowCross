@@ -618,9 +618,8 @@
 <section class="py-10 px-4 sm:px-10 lg:px-20">
     <div class="container mx-auto max-w-4xl">
         <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 backdrop-blur-sm hover:bg-gray-800/30 transition text-center">
-            <h3 class="text-xl font-semibold mb-4">До релиза FlowCross осталось:</h3>
+            <h3 class="text-xl font-semibold mb-4">FlowCross:</h3>
             <div id="countdown" class="text-3xl font-bold gradient-text">
-                <span id="days"></span>д 
                 <span id="hours"></span>ч 
                 <span id="minutes"></span>м 
                 <span id="seconds"></span>с
@@ -633,7 +632,7 @@
 <script>
     // Таймер обратного отсчета до 13 июля
     function updateCountdown() {
-        const targetDate = new Date('July 13, 2025 00:00:00').getTime();
+        const targetDate = new Date('July 13, 2025 15:00:00').getTime();
         const now = new Date().getTime();
         const distance = targetDate - now;
 
@@ -646,13 +645,11 @@
         }
 
         // Расчет дней, часов, минут и секунд
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
         // Обновление элементов
-        document.getElementById('days').textContent = days;
         document.getElementById('hours').textContent = hours;
         document.getElementById('minutes').textContent = minutes;
         document.getElementById('seconds').textContent = seconds;
@@ -660,7 +657,7 @@
         // Если осталось меньше 24 часов, делаем таймер красным
         if (days === 0) {
             document.getElementById('countdown').classList.remove('gradient-text');
-            document.getElementById('countdown').classList.add('text-red-500');
+            document.getElementById('countdown').classList.add('text-white-500');
         }
     }
 
