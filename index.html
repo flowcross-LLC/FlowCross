@@ -123,26 +123,26 @@
             transform: translateY(-2px);
         }
         
-        .windows-card:hover {
+        .-card:hover {
             box-shadow: 0 8px 15px rgba(0, 164, 239, 0.3);
             border-color: rgba(0, 164, 239, 0.7);
             background: rgba(219, 219, 219, 0.85);
             opacity: 1;
         }
         
-        .windows-card:hover .download-btn {
+        .-card:hover .download-btn {
             box-shadow: 0 4px 15px rgba(0, 120, 215, 0.5) !important;
         }
         
-        .windows-card:hover .fa-windows {
+        .-card:hover .fa- {
             transform: scale(1.2);
             text-shadow: 0 0 20px rgba(0, 164, 239, 0.9);
             color: rgba(0, 164, 239, 0.9);
             transition: all 0.3s ease;
-            animation: windowsGlow 1.5s ease-in-out infinite alternate;
+            animation: Glow 1.5s ease-in-out infinite alternate;
         }
 
-        @keyframes windowsGlow {
+        @keyframes Glow {
             from {
                 text-shadow: 0 0 10px rgba(0, 164, 239, 0.7), 
                              0 0 20px rgba(0, 164, 239, 0.5);
@@ -562,7 +562,7 @@
                 <!--  -->
                 <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-blue-500 hover:border-opacity-50 download-card windows-card backdrop-blur-sm">
                     <i class="fab fa-windows text-5xl text-blue-400 mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-2">Windows</h3>
+                    <h3 class="text-xl font-semibold mb-2">Windows (beta)</h3>
                     <p class="text-gray-400 text-center mb-6">Windows 10/11 (64-bit)</p>
                     <a href="https://cloud.mail.ru/public/y62V/q9BqFwGHW" class="download-btn bg-gray-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg w-full text-center transition-all duration-300 h-[48px] flex items-center justify-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
                         <i class="fas fa-download mr-2"></i> Скачать .exe
