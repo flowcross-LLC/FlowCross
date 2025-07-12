@@ -614,22 +614,186 @@
         </div>
     </section>
 
-    <!-- Таймер обратного отсчета -->
-<section class="py-10 px-4 sm:px-10 lg:px-20">
-    <div class="container mx-auto max-w-4xl">
-        <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 backdrop-blur-sm hover:bg-gray-800/30 transition text-center">
-            <h3 class="text-xl font-semibold mb-4">FlowCross:</h3>
-            <div id="countdown" class="text-3xl font-bold gradient-text">
-                <span id="hours"></span>ч 
-                <span id="minutes"></span>м 
-                <span id="seconds"></span>с
+<!-- Таймер обратного отсчета с частицами -->
+<section class="py-10 px-4 sm:px-10 lg:px-20 relative">
+    <!-- Контейнер для частиц -->
+    <div id="countdown-particles" class="absolute inset-0 w-full h-full pointer-events-none"></div>
+    
+    <div class="container mx-auto max-w-4xl relative z-10">
+        <div class="bg-gray-800/50 rounded-xl p-8 border border-purple-500/30 backdrop-blur-sm transition-all duration-300 hover:border-purple-400/50 hover:shadow-lg hover:shadow-purple-500/10 group">
+            <h3 class="text-xl font-semibold mb-4 text-gray-300 group-hover:text-white transition-colors">До релиза FlowCross осталось:</h3>
+            
+            <div id="countdown" class="flex justify-center space-x-4 mb-2">
+                <div class="countdown-item">
+                    <span id="hours" class="countdown-digit">00</span>
+                    <span class="countdown-label">часов</span>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                    <span id="minutes" class="countdown-digit">00</span>
+                    <span class="countdown-label">минут</span>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                    <span id="seconds" class="countdown-digit">00</span>
+                    <span class="countdown-label">секунд</span>
+                </div>
             </div>
-            <div id="released-text" class="hidden text-red-500 text-xl font-bold mt-4">Сегодня.</div>
+            
+            <div id="released-text" class="hidden text-center">
+                <div class="text-red-400 text-2xl font-bold mb-2 animate-pulse">Сегодня!</div>
+                <p class="text-purple-300">Событие уже наступило</p>
+            </div>
+            
+            <div class="mt-4 text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                <i class="fas fa-clock mr-1"></i> 13 июля 2025, 15:00
+            </div>
         </div>
     </div>
 </section>
 
+<style>
+    /* Стили для таймера */
+    .countdown-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+    
+    .countdown-digit {
+        font-size: 3rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #8b5cf6, #c084fc);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .countdown-label {
+        font-size: 0.8rem;
+        color: #a78bfa;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: -5px;
+    }
+    
+    .countdown-separator {
+        font-size: 3rem;
+        font-weight: 300;
+        color: #8b5cf6;
+        display: flex;
+        align-items: center;
+        padding-bottom: 1rem;
+    }
+    
+    /* Анимация при наведении */
+    #countdown:hover .countdown-digit {
+        transform: translateY(-5px);
+        text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+    }
+    
+    #countdown:hover .countdown-separator {
+        animation: pulse 1s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+    }
+</style>
+
 <script>
+    // Инициализация частиц для таймера
+    document.addEventListener('DOMContentLoaded', function() {
+        particlesJS('countdown-particles', {
+            "particles": {
+                "number": {
+                    "value": 30,
+                    "density": {
+                        "enable": false
+                    }
+                },
+                "color": {
+                    "value": ["#8b5cf6", "#c084fc", "#d8b4fe"]
+                },
+                "shape": {
+                    "type": "circle"
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 2,
+                        "size_min": 1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#8b5cf6",
+                    "opacity": 0.2,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 0.5,
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "bounce",
+                    "bounce": false,
+                    "attract": {
+                        "enable": true,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "bubble"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "bubble": {
+                        "distance": 200,
+                        "size": 6,
+                        "duration": 2,
+                        "opacity": 0.8,
+                        "speed": 3
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+    });
+
     // Таймер обратного отсчета до 13 июля
     function updateCountdown() {
         const targetDate = new Date('July 13, 2025 15:00:00').getTime();
@@ -640,24 +804,31 @@
             // Если дата прошла
             document.getElementById('countdown').classList.add('hidden');
             document.getElementById('released-text').classList.remove('hidden');
-            document.getElementById('released-text').classList.add('animate-pulse');
             return;
         }
 
-        // Расчет дней, часов, минут и секунд
+        // Расчет времени
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
         // Обновление элементов
-        document.getElementById('hours').textContent = hours;
-        document.getElementById('minutes').textContent = minutes;
-        document.getElementById('seconds').textContent = seconds;
+        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
 
-        // Если осталось меньше 24 часов, делаем таймер красным
-        if (days === 0) {
-            document.getElementById('countdown').classList.remove('gradient-text');
-            document.getElementById('countdown').classList.add('text-white-500');
+        // Если осталось меньше 3 часов, меняем стиль
+        if (hours < 3) {
+            document.querySelectorAll('.countdown-digit').forEach(el => {
+                el.style.background = 'linear-gradient(135deg, #ef4444, #f87171)';
+                el.style.textShadow = '0 0 10px rgba(239, 68, 68, 0.5)';
+            });
+            document.querySelectorAll('.countdown-label').forEach(el => {
+                el.style.color = '#f87171';
+            });
+            document.querySelectorAll('.countdown-separator').forEach(el => {
+                el.style.color = '#ef4444';
+            });
         }
     }
 
