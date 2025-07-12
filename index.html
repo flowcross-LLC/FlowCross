@@ -293,7 +293,7 @@
             <nav class="hidden md:flex space-x-8">
                 <a href="#features" class="text-gray-300 hover:text-purple-400 transition">Возможности</a>
                 <a href="#modules" class="text-gray-300 hover:text-purple-400 transition">Модули</a>
-                <a href="#download" class="text-gray-300 hover:text-purple-400 transition">Скачать</a>
+                <a href="#" class="text-gray-300 hover:text-purple-400 transition">Скачать</a>
                 <a href="#premium" class="text-gray-300 hover:text-purple-400 transition">Покупка</a>
                 <a href="#faq" class="text-gray-300 hover:text-purple-400 transition">FAQ</a>
             </nav>
@@ -613,6 +613,61 @@
             </div>
         </div>
     </section>
+
+    <!-- Таймер обратного отсчета -->
+<section class="py-10 px-4 sm:px-10 lg:px-20">
+    <div class="container mx-auto max-w-4xl">
+        <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 backdrop-blur-sm hover:bg-gray-800/30 transition text-center">
+            <h3 class="text-xl font-semibold mb-4">До релиза FlowCross осталось:</h3>
+            <div id="countdown" class="text-3xl font-bold gradient-text">
+                <span id="days"></span>д 
+                <span id="hours"></span>ч 
+                <span id="minutes"></span>м 
+                <span id="seconds"></span>с
+            </div>
+            <div id="released-text" class="hidden text-red-500 text-xl font-bold mt-4">Сегодня.</div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Таймер обратного отсчета до 13 июля
+    function updateCountdown() {
+        const targetDate = new Date('July 13, 2025 00:00:00').getTime();
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance < 0) {
+            // Если дата прошла
+            document.getElementById('countdown').classList.add('hidden');
+            document.getElementById('released-text').classList.remove('hidden');
+            document.getElementById('released-text').classList.add('animate-pulse');
+            return;
+        }
+
+        // Расчет дней, часов, минут и секунд
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Обновление элементов
+        document.getElementById('days').textContent = days;
+        document.getElementById('hours').textContent = hours;
+        document.getElementById('minutes').textContent = minutes;
+        document.getElementById('seconds').textContent = seconds;
+
+        // Если осталось меньше 24 часов, делаем таймер красным
+        if (days === 0) {
+            document.getElementById('countdown').classList.remove('gradient-text');
+            document.getElementById('countdown').classList.add('text-red-500');
+        }
+    }
+
+    // Обновляем таймер каждую секунду
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+</script>
 
 
     <!-- FAQ Section -->
