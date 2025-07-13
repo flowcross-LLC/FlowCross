@@ -276,10 +276,10 @@
                 <h1 class="text-2xl font-bold gradient-text">FlowCross</h1>
             </div>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="#features" class="text-gray-300 hover:text-purple-400 transition">Возможности</a>
-                <a href="#modules" class="text-gray-300 hover:text-purple-400 transition">Модули</a>
-                <a href="#" class="text-gray-300 hover:text-purple-400 transition">Скачать</a>
-                <a href="#premium" class="text-gray-300 hover:text-purple-400 transition">Покупка</a>
+                <a href="#features" class="text-gray-300 hover:text-purple-400 transition scroll-link">Возможности</a>
+                <a href="#modules" class="text-gray-300 hover:text-purple-400 transition scroll-link">Модули</a>
+                <a href="#download" class="text-gray-300 hover:text-purple-400 transition scroll-link">Скачать</a>
+                <a href="#premium" class="text-gray-300 hover:text-purple-400 transition scroll-link">Покупка</a>
                 <div class="relative group">
                     <button id="account-menu-button" class="text-gray-300 hover:text-purple-400 transition flex items-center">
                         <i class="fas fa-user-circle mr-2"></i> Аккаунт
@@ -886,7 +886,7 @@
                     <div class="text-gray-500 text-sm">
                         &copy; 2025 FlowCross LLC. Все права защищены.
                     </div>
-                    <div class="text-gray-400 text-xs">v1.1</div>
+                    <div class="text-gray-400 text-xs">v1.1.1</div>
                     <a href="https://t.me/FlowCross" class="text-gray-400 hover:text-blue-400 transition">
                         <i class="fab fa-telegram text-lg hover:text-blue-400"></i>
                     </a>
@@ -916,7 +916,13 @@
                 
                 <div>
                     <label for="login-password" class="block text-sm font-medium text-gray-300 mb-1">Пароль</label>
-                    <input type="password" id="login-password" class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-purple-500 focus:ring-purple-500">
+                    <div class="relative">
+                        <input type="password" id="login-password" class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-purple-500 focus:ring-purple-500 pr-10" required minlength="8">
+                        <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-purple-400" onclick="togglePasswordVisibility('login-password', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">Минимум 8 символов</div>
                 </div>
                 
                 <div class="flex items-center justify-between">
@@ -982,7 +988,24 @@
                 
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Пароль</label>
-                    <input type="password" id="password" class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-purple-500 focus:ring-purple-500">
+                    <div class="relative">
+                        <input type="password" id="password" class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-purple-500 focus:ring-purple-500 pr-10" required minlength="8">
+                        <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-purple-400" onclick="togglePasswordVisibility('password', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">Минимум 8 символов</div>
+                </div>
+                
+                <div>
+                    <label for="confirm-password" class="block text-sm font-medium text-gray-300 mb-1">Подтвердите пароль</label>
+                    <div class="relative">
+                        <input type="password" id="confirm-password" class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-purple-500 focus:ring-purple-500 pr-10" required minlength="8">
+                        <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-purple-400" onclick="togglePasswordVisibility('confirm-password', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div id="password-match-error" class="text-xs text-red-500 mt-1 hidden">Пароли не совпадают</div>
                 </div>
                 
                 <div class="flex items-center">
@@ -1154,6 +1177,22 @@
                 }
             });
         });
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.scroll-link').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
         // Mobile menu toggle
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -1311,12 +1350,78 @@
             showRegistrationModal();
         });
 
+        // Password visibility toggle
+        function togglePasswordVisibility(inputId, button) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                input.type = 'password';
+                button.innerHTML = '<i class="fas fa-eye"></i>';
+            }
+        }
+
+        // Password validation
+        function validatePassword(password, confirmPassword) {
+            const passwordMatchError = document.getElementById('password-match-error');
+            
+            if (password.length < 8) {
+                alert('Пароль должен содержать минимум 8 символов!');
+                return false;
+            }
+            
+            if (confirmPassword && password !== confirmPassword) {
+                passwordMatchError.classList.remove('hidden');
+                return false;
+            } else {
+                passwordMatchError.classList.add('hidden');
+            }
+            
+            return true;
+        }
+
+        // Email validation
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Real-time password matching check
+        document.getElementById('confirm-password').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            const passwordMatchError = document.getElementById('password-match-error');
+            
+            if (password && confirmPassword && password !== confirmPassword) {
+                passwordMatchError.classList.remove('hidden');
+            } else {
+                passwordMatchError.classList.add('hidden');
+            }
+        });
+
         // Handle login form submission
         document.querySelector('#login-modal form').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const identifier = document.getElementById('login-identifier').value;
+            const password = document.getElementById('login-password').value;
             const rememberMe = document.getElementById('remember-login').checked;
+            
+            if (!identifier || !password) {
+                alert('Пожалуйста, заполните все поля!');
+                return;
+            }
+            
+            if (!validateEmail(identifier) && identifier.length < 3) {
+                alert('Пожалуйста, введите корректный email или имя пользователя (минимум 3 символа)!');
+                return;
+            }
+            
+            if (password.length < 8) {
+                alert('Пароль должен содержать минимум 8 символов!');
+                return;
+            }
             
             // Save to cookies if "Remember me" is checked
             if (rememberMe) {
@@ -1437,7 +1542,28 @@
             
             const email = document.getElementById('email').value;
             const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
             const rememberMe = document.getElementById('remember-me').checked;
+            
+            if (!email || !username || !password || !confirmPassword) {
+                alert('Пожалуйста, заполните все поля!');
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                alert('Пожалуйста, введите корректный email!');
+                return;
+            }
+            
+            if (username.length < 3) {
+                alert('Имя пользователя должно содержать минимум 3 символа!');
+                return;
+            }
+            
+            if (!validatePassword(password, confirmPassword)) {
+                return;
+            }
             
             // Save to cookies if "Remember me" is checked
             if (rememberMe) {
