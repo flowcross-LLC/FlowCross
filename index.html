@@ -291,6 +291,21 @@
         html {
             scroll-behavior: smooth;
         }
+
+        /* Flip scroll animation */
+        .flip-scroll {
+            perspective: 1000px;
+        }
+        
+        .flip-scroll section {
+            transform-origin: center top;
+            transition: transform 0.8s ease, opacity 0.8s ease;
+        }
+        
+        .flipping {
+            transform: rotateX(90deg);
+            opacity: 0;
+        }
         
         /* Enhanced scroll animation */
         @keyframes smoothScroll {
@@ -412,7 +427,7 @@
                     <a href="#download" class="download-btn bg-purple-600/45 hover:bg-purple-700/95 text-white font-semibold py-3 px-8 rounded-lg text-center">
                         <i class="fas fa-download mr-2 hover:text-purple-200"></i> Скачать сейчас
                     </a>
-                    <a href="#features" class="border border-purple-600 text-purple-400 hover:bg-purple-900/30 font-semibold py-3 px-8 rounded-lg text-center transition">
+                    <a href="#features" class="border border-purple-600 text-purple-400 hover:bg-purple-900/30 font-semibold py-3 px-8 rounded-lg text-center transition scroll-link">
                         <i class="fas fa-list-ul mr-2"></i> Возможности
                     </a>
                 </div>
@@ -1234,17 +1249,43 @@
                     const targetElement = document.querySelector(targetId);
                     
                     if (targetElement) {
-                        // Add bounce animation to target section
-                        targetElement.style.animation = 'smoothScroll 0.8s ease';
-                        setTimeout(() => {
-                            targetElement.style.animation = '';
-                        }, 800);
-                        
-                        // Smooth scroll with offset for header
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
+                        // Check if this is the "Возможности" link
+                        if (this.textContent.includes('Возможности')) {
+                            // Add flip class to body
+                            document.body.classList.add('flip-scroll');
+                            
+                            // Flip current section
+                            const currentSection = document.elementFromPoint(
+                                window.innerWidth/2, 
+                                window.innerHeight/2
+                            ).closest('section');
+                            
+                            if (currentSection) {
+                                currentSection.classList.add('flipping');
+                            }
+                            
+                            // After flip animation completes, scroll to target
+                            setTimeout(() => {
+                                window.scrollTo({
+                                    top: targetElement.offsetTop - 80,
+                                    behavior: 'smooth'
+                                });
+                                
+                                // Remove flip classes after animation
+                                setTimeout(() => {
+                                    if (currentSection) {
+                                        currentSection.classList.remove('flipping');
+                                    }
+                                    document.body.classList.remove('flip-scroll');
+                                }, 800);
+                            }, 400);
+                        } else {
+                            // Regular smooth scroll for other links
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 80,
+                                behavior: 'smooth'
+                            });
+                        }
 
                         // Add pulse effect to the target section
                         setTimeout(() => {
