@@ -631,6 +631,11 @@
             <h3 class="text-xl font-semibold mb-4 text-gray-300 group-hover:text-white transition-colors">Что то случиться...</h3>
             
             <div id="countdown" class="flex justify-center space-x-4 mb-2">
+                <div class="countdown-item days-item">
+                    <span id="days" class="countdown-digit">00</span>
+                    <span class="countdown-label">дней</span>
+                </div>
+                <div class="countdown-separator">:</div>
                 <div class="countdown-item">
                     <span id="hours" class="countdown-digit">00</span>
                     <span class="countdown-label">часов</span>
@@ -653,7 +658,7 @@
             </div>
             
             <div class="mt-4 text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                <i class="fas fa-clock mr-1"></i> 13 июля 2025, 16:35
+                <i class="fas fa-clock mr-1"></i> 20 июля 2025, 20:20
             </div>
         </div>
     </div>
@@ -668,11 +673,15 @@
         transition: all 0.3s ease;
     }
     
+    .days-item {
+        display: flex;
+    }
+    
     .countdown-digit {
         font-size: 3rem;
         font-weight: 700;
-        color: #ef4444;
-        text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+        color: #8b5cf6;
+        text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
         transition: all 0.3s ease;
     }
     
@@ -691,6 +700,16 @@
         display: flex;
         align-items: center;
         padding-bottom: 1rem;
+    }
+
+    .countdown-warning .countdown-digit,
+    .countdown-warning .countdown-separator {
+        color: #ef4444;
+        text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+    }
+
+    .countdown-warning .countdown-label {
+        color: #f87171;
     }
     
     /* Анимация при наведении */
@@ -798,9 +817,9 @@
         });
     });
 
-    // Таймер обратного отсчета до 13 июля
+    // Таймер обратного отсчета до 20 июля 2025
     function updateCountdown() {
-        const targetDate = new Date('July 13, 2025 16:35:00').getTime(); // 16:00 MSK (GMT+3)
+        const targetDate = new Date('July 20, 2025 20:20:20').getTime(); // 20:20 MSK (GMT+3)
         const now = new Date().getTime();
         const distance = targetDate - now;
 
@@ -812,27 +831,36 @@
         }
 
         // Расчет времени
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
         // Обновление элементов
+        document.getElementById('days').textContent = days.toString().padStart(2, '0');
         document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
         document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
         document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
 
-        // Если осталось меньше 3 часов, меняем стиль
-        if (hours < 3) {
-            document.querySelectorAll('.countdown-digit').forEach(el => {
-                el.style.color = '#ef4444';
-                el.style.textShadow = '0 0 15px rgba(239, 68, 68, 0.7)';
-            });
-            document.querySelectorAll('.countdown-label').forEach(el => {
-                el.style.color = '#f87171';
-            });
-            document.querySelectorAll('.countdown-separator').forEach(el => {
-                el.style.color = '#ef4444';
-            });
+        // Показываем/скрываем дни в зависимости от оставшегося времени
+        const daysItem = document.querySelector('.days-item');
+        const daysSeparator = document.querySelectorAll('.countdown-separator')[0];
+        
+        if (days === 0 && hours < 24) {
+            // Меньше 24 часов - скрываем дни
+            daysItem.style.display = 'none';
+            daysSeparator.style.display = 'none';
+        } else {
+            // Больше 24 часов - показываем дни
+            daysItem.style.display = 'flex';
+            daysSeparator.style.display = 'flex';
+        }
+
+        // Если осталось меньше 30 минут, добавляем warning класс
+        if (days === 0 && hours === 0 && minutes < 30) {
+            document.getElementById('countdown').classList.add('countdown-warning');
+        } else {
+            document.getElementById('countdown').classList.remove('countdown-warning');
         }
     }
 
