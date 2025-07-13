@@ -79,13 +79,6 @@
         }
         
         .gradient-text {
-            color: #e2e2e2;
-            transition: all 0.5s ease;
-        }
-        
-        .gradient-text:hover, 
-        .gradient-scroll,
-        .gradient-visible {
             background: linear-gradient(90deg, #8b5cf6, #c084fc);
             -webkit-background-clip: text;
             background-clip: text;
@@ -453,7 +446,7 @@
     <section id="features" class="py-20 px-4 sm:px-10 lg:px-20 bg-white-900/50">
         <div class="container mx-auto">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Почему <span class="gradient-text">FlowCross?</span></h2>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 gradient-text">Почему FlowCross?</h2>
                 <p class="text-gray-400 max-w-2xl mx-auto">Инновационные возможности, которые делают игру удобнее</p>
             </div>
             
@@ -520,7 +513,7 @@
     <section id="premium" class="py-20 px-4 sm:px-10 lg:px-20 bg-white-900/50">
         <div class="container mx-auto max-w-4xl">
             <div class="text-center mb-10">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Получить <span class="gradient-text">Flowcross</span></h2>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 gradient-text">Получить Flowcross</h2>
                 <p class="text-gray-400 max-w-2xl mx-auto">Разблокируйте новые возможности с FlowCross </p>
             </div>
             
@@ -542,7 +535,7 @@
     <section id="modules" class="py-20 px-4 sm:px-10 lg:px-20">
         <div class="container mx-auto">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Модули <span class="gradient-text">FlowCross</span></h2>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 gradient-text">Модули FlowCross</h2>
                 <p class="text-gray-400 max-w-2xl mx-auto">Дополнения для кастомизации вашего лаунчера</p>
             </div>
             
@@ -624,7 +617,7 @@
     <section id="download" class="py-20 px-4 sm:px-10 lg:px-20">
         <div class="container mx-auto">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Скачать <span class="gradient-text">FlowCross</span></h2>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 gradient-text">Скачать FlowCross</h2>
                 <p class="text-gray-400 max-w-2xl mx-auto">Выберите версию для вашей операционной системы</p>
             </div>
             
@@ -1112,6 +1105,11 @@
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
+        // Блокировка правой кнопки мыши
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
         // Parallax effect for Mac window
         const macWindow = document.querySelector('.mac-window');
         document.addEventListener('mousemove', (e) => {
