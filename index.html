@@ -192,8 +192,9 @@
             transition: all 0.3s ease;
         }
         
-        i.fas:hover, i.fab:hover {
-            text-shadow: 0 0 10px currentColor;
+        /* Remove hover effect for Windows icon specifically */
+        .windows-card:hover i.fab.fa-windows {
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.7);
             transform: scale(1.1);
         }
         
@@ -224,25 +225,7 @@
         .download-card:hover {
             background: rgba(30, 30, 40, 0.3);
             backdrop-filter: blur(5px);
-        }
 
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out, opacity 0.2s ease;
-            opacity: 0;
-        }
-
-        .faq-answer.show {
-            max-height: 500px;
-            opacity: 1;
-            transition: max-height 0.5s ease-in, opacity 0.3s ease 0.1s;
-        }
-
-        .faq-question i {
-            transition: transform 0.3s ease;
-        }
-        
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
             70% { box-shadow: 0 0 0 10px rgba(139, 92, 246, 0); }
@@ -292,12 +275,27 @@
                 </div>
                 <h1 class="text-2xl font-bold gradient-text">FlowCross</h1>
             </div>
-            <nav class="hidden md:flex space-x-8">
+            <nav class="hidden md:flex items-center space-x-8">
                 <a href="#features" class="text-gray-300 hover:text-purple-400 transition">Возможности</a>
                 <a href="#modules" class="text-gray-300 hover:text-purple-400 transition">Модули</a>
                 <a href="#" class="text-gray-300 hover:text-purple-400 transition">Скачать</a>
                 <a href="#premium" class="text-gray-300 hover:text-purple-400 transition">Покупка</a>
-                <a href="#faq" class="text-gray-300 hover:text-purple-400 transition">FAQ</a>
+                <div class="relative group">
+                    <button id="account-menu-button" class="text-gray-300 hover:text-purple-400 transition flex items-center">
+                        <i class="fas fa-user-circle mr-2"></i> Аккаунт
+                    </button>
+                    <div id="account-menu" class="absolute right-0 mt-2 w-48 bg-gray-800/10 rounded-lg shadow-lg py-2 z-50 hidden border border-gray-700/50">
+                        <a href="#" id="login-link" class="block px-4 py-2 text-gray-300 hover:bg-gray-700/20">
+                            <i class="fas fa-sign-in-alt mr-2"></i> Войти
+                        </a>
+                        <a href="#" id="register-link" class="block px-4 py-2 text-gray-300 hover:bg-gray-700/20">
+                            <i class="fas fa-user-plus mr-2"></i> Регистрация
+                        </a>
+                        <div class="px-4 py-2 text-xs text-gray-500 border-t border-gray-700 mt-1">
+                            Пока не работает :(
+                        </div>
+                    </div>
+                </div>
             </nav>
             <button id="mobile-menu-button" class="md:hidden text-gray-300 hover:text-purple-400">
                 <i class="fas fa-bars text-2xl"></i>
@@ -326,12 +324,19 @@
                 <a href="#premium" class="text-2xl text-gray-300 hover:text-purple-400 transition py-3 flex items-center justify-center">
                     <i class="fas fa-key mr-3 text-purple-400 w-6 text-center"></i> Покупка
                 </a>
-                <a href="#faq" class="text-2xl text-gray-300 hover:text-purple-400 transition py-3 flex items-center justify-center">
-                    <i class="fas fa-question-circle mr-3 text-purple-400 w-6 text-center"></i> FAQ
-                </a>
-                <a href="#" class="text-2xl text-gray-500 cursor-not-allowed transition py-3 flex items-center justify-center">
-                    <i class="fas fa-user-circle mr-3 text-gray-500 w-6 text-center"></i> Аккаунт <span class="text-sm ml-2 text-gray-400">(скоро)</span>
-                </a>
+                <div class="text-center">
+                    <button id="mobile-account-button" class="text-2xl text-gray-300 py-3 w-full">
+                        <i class="fas fa-user-circle mr-3 w-6 text-center"></i> Аккаунт
+                    </button>
+                    <div id="mobile-account-menu" class="pl-10 pb-2 hidden">
+                        <a href="#" class="mobile-login-link block py-2 text-gray-300 hover:text-purple-400">
+                            <i class="fas fa-sign-in-alt mr-2"></i> Войти
+                        </a>
+                        <a href="#" class="mobile-register-link block py-2 text-gray-300 hover:text-purple-400">
+                            <i class="fas fa-user-plus mr-2"></i> Регистрация
+                        </a>
+                    </div>
+                </div>
             </nav>
             <div class="mt-auto pt-10 text-center">
                 <p class="text-gray-400 mb-4">FlowCross Launcher</p>
@@ -391,9 +396,9 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Feature 1 -->
-                <div class="feature-card p-6 rounded-xl border border-gray-800 text-center">
+                <div class="feature-card p-6 rounded-xl border border-gray-800 text-center hover:[&>div>i]:text-purple-200 hover:[&>div>i]:drop-shadow-[0_0_8px_rgba(139,92,246,0.6)]">
                     <div class="w-12 h-12 rounded-lg bg-purple-600/20 flex items-center justify-center mb-4 mx-auto hover:bg-purple-600/30 transition">
-                        <i class="fas fa-bolt text-purple-400 text-xl hover:text-purple-200"></i>
+                        <i class="fas fa-bolt text-purple-400 text-xl transition-all duration-300"></i>
                     </div>
                     <h3 class="text-xl font-semibold mb-3">Молниеносная скорость</h3>
                     <p class="text-gray-400">Оптимизированный код обеспечивает быстрый запуск игры и минимальное потребление ресурсов.</p>
@@ -480,14 +485,14 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Module 1 -->
-                <div class="feature-card p-6 rounded-xl border border-gray-800">
-                    <div class="w-12 h-12 rounded-lg bg-purple-600/20 flex items-center justify-center mb-4">
-                        <i class="fas fa-paint-brush text-purple-400 text-xl"></i>
+                <div class="feature-card p-6 rounded-xl border border-gray-800 hover:border-purple-500 transition-colors duration-1000">
+                    <div class="w-12 h-12 rounded-lg bg-purple-600/20 flex items-center justify-center mb-4 hover:bg-purple-600/30 transition">
+                        <i class="fas fa-paint-brush text-purple-400 text-xl hover:text-purple-300 transition"></i>
                     </div>
                     <h3 class="text-xl font-semibold mb-3">Темы оформления</h3>
                     <p class="text-gray-400 mb-4">полторы уникальные темы для персонализации внешнего вида лаунчера.</p>
-                    <a href="#" class="text-gray-500 cursor-not-allowed text-sm font-medium">
-                        <i class="fas fa-download mr-1"></i> Скоро
+                    <a href="https://cloud.mail.ru/public/C27x/hq3HEkaQ3" target="_blank" class="text-purple-400 hover:text-purple-300 text-sm font-medium transition">
+                        <i class="fas fa-download mr-1"></i> Скачать
                     </a>
                 </div>
                 
@@ -561,9 +566,9 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-                <!--  -->
-                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-blue-500 hover:border-opacity-50 download-card windows-card backdrop-blur-sm">
-                    <i class="fab fa-windows text-5xl text-blue-400 mb-4"></i>
+                <!-- Windows Download -->
+                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-blue-500 hover:border-opacity-50 download-card windows-card backdrop-blur-sm hover:shadow-[0_0_20px_rgba(96,165,250,0.3)] group">
+                    <i class="fab fa-windows text-5xl text-blue-400 mb-4 transition-all duration-300"></i>
                     <h3 class="text-xl font-semibold mb-2">Windows</h3>
                     <p class="text-gray-400 text-center mb-6">Windows 10/11 (beta)</p>
                     <a href="https://cloud.mail.ru/public/y62V/q9BqFwGHW" class="download-btn bg-gray-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg w-full text-center transition-all duration-300 h-[48px] flex items-center justify-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
@@ -572,8 +577,8 @@
                 </div>
                 
                 <!-- macOS -->
-                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-gray-300 hover:border-opacity-50 download-card macos-card backdrop-blur-sm">
-                    <i class="fab fa-apple text-5xl text-gray-300 mb-4 windows-icon"></i>
+                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-gray-300 hover:border-opacity-50 download-card macos-card backdrop-blur-sm hover:shadow-[0_0_20px_rgba(209,213,219,0.3)]">
+                    <i class="fab fa-apple text-5xl text-gray-300 mb-4 transition-all duration-300"></i>
                     <h3 class="text-xl font-semibold mb-2">macOS</h3>
                     <p class="text-gray-400 text-center mb-6">macOS 14+</p>
                     <a href="#" class="download-btn bg-gray-600 cursor-not-allowed text-gray-400 font-semibold py-3 px-6 rounded-lg w-full text-center h-[48px] flex items-center justify-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
@@ -582,8 +587,8 @@
                 </div>
                 
                 <!-- Linux -->
-                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-yellow-400 hover:border-opacity-50 download-card linux-card backdrop-blur-sm">
-                    <i class="fab fa-linux text-5xl text-yellow-400 mb-4 windows-icon"></i>
+                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-yellow-400 hover:border-opacity-50 download-card linux-card backdrop-blur-sm hover:shadow-[0_0_20px_rgba(234,179,8,0.3)]">
+                    <i class="fab fa-linux text-5xl text-yellow-400 mb-4 transition-all duration-300"></i>
                     <h3 class="text-xl font-semibold mb-2">Linux</h3>
                     <p class="text-gray-400 text-center mb-6">Debian, Ubuntu, Fedora</p>
                     <a href="#" class="download-btn bg-gray-600 cursor-not-allowed text-gray-400 font-semibold py-3 px-6 rounded-lg w-full text-center h-[48px] flex items-center justify-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
@@ -592,8 +597,8 @@
                 </div>
 
                 <!-- Android -->
-                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-green-500 hover:border-opacity-50 download-card android-card backdrop-blur-sm">
-                    <i class="fab fa-android text-5xl text-green-400 mb-4 windows-icon"></i>
+                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-green-500 hover:border-opacity-50 download-card android-card backdrop-blur-sm hover:shadow-[0_0_20px_rgba(74,222,128,0.3)]">
+                    <i class="fab fa-android text-5xl text-green-400 mb-4 transition-all duration-300"></i>
                     <h3 class="text-xl font-semibold mb-2">Android</h3>
                     <p class="text-gray-400 text-center mb-6">Android 12+</p>
                     <a href="#" class="download-btn bg-gray-600 cursor-not-allowed text-gray-400 font-semibold py-3 px-6 rounded-lg w-full text-center h-[48px] flex items-center justify-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
@@ -648,7 +653,7 @@
             </div>
             
             <div class="mt-4 text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                <i class="fas fa-clock mr-1"></i> 13 июля 2025, 15:00
+                <i class="fas fa-clock mr-1"></i> 13 июля 2025, 16:00
             </div>
         </div>
     </div>
@@ -666,11 +671,8 @@
     .countdown-digit {
         font-size: 3rem;
         font-weight: 700;
-        background: linear-gradient(135deg, #8b5cf6, #c084fc);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        text-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+        color: #ef4444;
+        text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
         transition: all 0.3s ease;
     }
     
@@ -798,7 +800,7 @@
 
     // Таймер обратного отсчета до 13 июля
     function updateCountdown() {
-        const targetDate = new Date('July 13, 2025 15:00:00').getTime();
+        const targetDate = new Date('July 13, 2025 16:35:00').getTime(); // 16:00 MSK (GMT+3)
         const now = new Date().getTime();
         const distance = targetDate - now;
 
@@ -822,8 +824,8 @@
         // Если осталось меньше 3 часов, меняем стиль
         if (hours < 3) {
             document.querySelectorAll('.countdown-digit').forEach(el => {
-                el.style.background = 'linear-gradient(135deg, #ef4444, #f87171)';
-                el.style.textShadow = '0 0 10px rgba(239, 68, 68, 0.5)';
+                el.style.color = '#ef4444';
+                el.style.textShadow = '0 0 15px rgba(239, 68, 68, 0.7)';
             });
             document.querySelectorAll('.countdown-label').forEach(el => {
                 el.style.color = '#f87171';
@@ -840,94 +842,6 @@
 </script>
 
 
-    <!-- FAQ Section -->
-    <section id="faq" class="py-20 px-4 sm:px-10 lg:px-20 bg-white-900/50">
-        <div class="container mx-auto max-w-4xl">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Частые <span class="gradient-text">вопросы</span></h2>
-                <p class="text-gray-400 max-w-2xl mx-auto">Не нашли ответ? Напишите нам в поддержку</p>
-            </div>
-            
-            <div class="space-y-4">
-                <!-- FAQ Item 1 -->
-                <div class="bg-gray-800/50 rounded-xl p-5 border border-gray-700 backdrop-blur-sm">
-                    <button class="faq-question flex justify-between items-center w-full text-left">
-                        <h3 class="font-medium text-lg">FlowCross - это безопасно?</h3>
-                        <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
-                    </button>
-                    <div class="faq-answer mt-3 text-gray-400 hidden">
-                        <p>Да, FlowCross полностью безопасен. Мы не храним ваши данные для входа и не имеем доступа к вашему аккаунту Minecraft. Лаунчер имеет открытый исходный код, который может проверить любой желающий.</p>
-                    </div>
-                </div>
-                
-                <!-- FAQ Item 2 -->
-                <div class="bg-gray-800/50 rounded-xl p-5 border border-gray-700">
-                    <button class="faq-question flex justify-between items-center w-full text-left">
-                        <h3 class="font-medium text-lg">Какие версии Minecraft поддерживаются?</h3>
-                        <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
-                    </button>
-                    <div class="faq-answer mt-3 text-gray-400 hidden">
-                        <p>FlowCross поддерживает все версии Minecraft от классических до самых новых, включая snapshots. Вы можете легко переключаться между версиями в настройках лаунчера.</p>
-                    </div>
-                </div>
-                
-                <!-- FAQ Item 3 -->
-                <div class="bg-gray-800/50 rounded-xl p-5 border border-gray-700">
-                    <button class="faq-question flex justify-between items-center w-full text-left">
-                        <h3 class="font-medium text-lg">Как установить моды?</h3>
-                        <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
-                    </button>
-                    <div class="faq-answer mt-3 text-gray-400 hidden">
-                        <p>FlowCross имеет встроенный менеджер модов. Просто перейдите в раздел "Моды", выберите нужные из каталога или добавьте свои файлы .jar. Лаунчер автоматически позаботится о совместимости версий.</p>
-                    </div>
-                </div>
-                
-                <!-- FAQ Item 4 -->
-                <div class="bg-gray-800/50 rounded-xl p-5 border border-gray-700">
-                    <button class="faq-question flex justify-between items-center w-full text-left">
-                        <h3 class="font-medium text-lg">Есть ли мобильная версия?</h3>
-                        <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
-                    </button>
-                    <div class="faq-answer mt-3 text-gray-400 hidden">
-                        <p>В настоящее время FlowCross доступен только для Windows. Мобильная версия находится в разработке и будет выпущена в ближайшем будущем.</p>
-                    </div>
-                </div>
-                
-                <!-- FAQ Item 5 -->
-                <div class="bg-gray-800/50 rounded-xl p-5 border border-gray-700">
-                    <button class="faq-question flex justify-between items-center w-full text-left">
-                        <h3 class="font-medium text-lg">Как обновить лаунчер?</h3>
-                        <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
-                    </button>
-                    <div class="faq-answer mt-3 text-gray-400 hidden">
-                        <p>FlowCross автоматически проверяет обновления при запуске. Если доступна новая версия, вам будет предложено её установить. Также вы можете вручную проверить обновления в настройках.</p>
-                    </div>
-                </div>
-                
-                <!-- FAQ Item 6 -->
-                <div class="bg-gray-800/50 rounded-xl p-5 border border-gray-700">
-                    <button class="faq-question flex justify-between items-center w-full text-left">
-                        <h3 class="font-medium text-lg">Покупка лаунчера навсегда?</h3>
-                        <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
-                    </button>
-                    <div class="faq-answer mt-3 text-gray-400 hidden">
-                        <p>Да, покупка лаунчера навсегда если осуществлялась с официального сайта, лишь выиграв конкурс вы можете получить её на определённый срок</p>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 7 -->
-                <div class="bg-gray-800/50 rounded-xl p-5 border border-gray-700">
-                    <button class="faq-question flex justify-between items-center w-full text-left">
-                        <h3 class="font-medium text-lg">Я оплатил больше чем нужно, у меня преимущество?</h3>
-                        <i class="fas fa-chevron-down text-purple-400 transition-transform duration-300"></i>
-                    </button>
-                    <div class="faq-answer mt-3 text-gray-400 hidden">
-                        <p>Оплата большей суммы чем нужно будет считаться по формуле: сумма оплаты - цена лаунчера = сумма поддержки разработчика</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Footer -->
     <footer class="py-12 px-4 sm:px-10 lg:px-20 bg-black-900">
@@ -944,7 +858,7 @@
                     <div class="text-gray-500 text-sm">
                         &copy; 2025 FlowCross LLC. Все права защищены.
                     </div>
-                    <div class="text-gray-400 text-xs">v1.0.4</div>
+                    <div class="text-gray-400 text-xs">v1.1</div>
                     <a href="https://t.me/FlowCross" class="text-gray-400 hover:text-blue-400 transition">
                         <i class="fab fa-telegram text-lg hover:text-blue-400"></i>
                     </a>
@@ -953,7 +867,135 @@
         </div>
     </footer>
 
-    <!-- Particles.js -->
+    <!-- Google API -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black/70 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div class="bg-gray-800/40 rounded-xl p-8 max-w-md w-full mx-4 border border-gray-700/50 backdrop-blur-sm transform transition-all duration-300 scale-95">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">Вход</h3>
+                <button id="close-login" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form class="space-y-4">
+                <div>
+                    <label for="login-identifier" class="block text-sm font-medium text-gray-300 mb-1">Почта / Юзернейм</label>
+                    <input type="text" id="login-identifier" class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-purple-500 focus:ring-purple-500">
+                </div>
+                
+                <div>
+                    <label for="login-password" class="block text-sm font-medium text-gray-300 mb-1">Пароль</label>
+                    <input type="password" id="login-password" class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-purple-500 focus:ring-purple-500">
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="remember-login" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-600 rounded bg-gray-700">
+                        <label for="remember-login" class="ml-2 block text-sm text-gray-300">Запомнить меня</label>
+                    </div>
+                    <a href="#" class="text-sm text-purple-400 hover:text-purple-300">Забыли пароль?</a>
+                </div>
+                
+                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition">
+                    Войти
+                </button>
+            </form>
+            
+            <div class="mt-6 pt-6 border-t border-gray-700/50">
+                <p class="text-center text-gray-400 mb-4">Или войти через</p>
+                <div class="flex justify-center">
+                    <div id="g_id_onload"
+                         data-client_id="1076124717481-83ulnnuk6cbpscvtippsjsr9vqhvpb3c.apps.googleusercontent.com"
+                         data-context="signin"
+                         data-ux_mode="popup"
+                         data-callback="handleGoogleSignIn"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="rectangular"
+                         data-theme="filled_blue"
+                         data-text="signin_with"
+                         data-size="large"
+                         data-logo_alignment="left">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4 text-center text-sm text-gray-400">
+                Нет аккаунта? <a href="#" id="show-register" class="text-purple-400 hover:text-purple-300">Зарегистрироваться</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="registration-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black/70 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div class="bg-gray-800/40 rounded-xl p-8 max-w-md w-full mx-4 border border-gray-700/50 backdrop-blur-sm transform transition-all duration-300 scale-95">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">Регистрация</h3>
+                <button id="close-registration" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form class="space-y-4">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                    <input type="email" id="email" class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-purple-500 focus:ring-purple-500">
+                </div>
+                
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-300 mb-1">Юзернейм</label>
+                    <input type="text" id="username" class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-purple-500 focus:ring-purple-500">
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Пароль</label>
+                    <input type="password" id="password" class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-purple-500 focus:ring-purple-500">
+                </div>
+                
+                <div class="flex items-center">
+                    <input type="checkbox" id="remember-me" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-600 rounded bg-gray-700">
+                    <label for="remember-me" class="ml-2 block text-sm text-gray-300">Запомнить меня</label>
+                </div>
+                
+                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition">
+                    Зарегистрироваться
+                </button>
+            </form>
+            
+            <div class="mt-6 pt-6 border-t border-gray-700/50">
+                <p class="text-center text-gray-400 mb-4">Или зарегистрироваться через</p>
+                <div class="flex justify-center">
+                    <div id="g_id_onload"
+                         data-client_id="1076124717481-83ulnnuk6cbpscvtippsjsr9vqhvpb3c.apps.googleusercontent.com"
+                         data-context="signin"
+                         data-ux_mode="popup"
+                         data-callback="handleGoogleSignIn"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="rectangular"
+                         data-theme="filled_blue"
+                         data-text="signin_with"
+                         data-size="large"
+                         data-logo_alignment="left">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4 text-center text-sm text-gray-400">
+                Уже есть аккаунт? <a href="#" id="show-login" class="text-purple-400 hover:text-purple-300">Войти</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JWT Decode and Particles.js -->
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
         // Parallax effect for Mac window
@@ -966,78 +1008,66 @@
             }
         });
 
-        // Initialize particles
+        // Initialize particles with new style
         document.addEventListener('DOMContentLoaded', function() {
             const particles = particlesJS('particles-js', {
                 "particles": {
                     "number": {
-                        "value": 120,
+                        "value": 80,
                         "density": {
                             "enable": true,
-                            "value_area": 1000
+                            "value_area": 800
                         }
                     },
                     "color": {
-                        "value": ["#8b5cf6", "#c084fc", "#d8b4fe"]
+                        "value": "#8b5cf6"
                     },
                     "shape": {
-                        "type": ["circle", "triangle", "star"],
+                        "type": "circle",
                         "stroke": {
                             "width": 0,
                             "color": "#000000"
-                        },
-                        "polygon": {
-                            "nb_sides": 5
                         }
                     },
                     "opacity": {
-                        "value": 0.5,
+                        "value": 0.3,
                         "random": true,
                         "anim": {
                             "enable": true,
-                            "speed": 1.5,
-                            "opacity_min": 0.2,
+                            "speed": 1,
+                            "opacity_min": 0.1,
                             "sync": false
                         }
                     },
                     "size": {
-                        "value": 4,
+                        "value": 3,
                         "random": true,
                         "anim": {
                             "enable": true,
-                            "speed": 3,
+                            "speed": 2,
                             "size_min": 1,
                             "sync": false
                         }
                     },
                     "line_linked": {
                         "enable": true,
-                        "distance": 200,
+                        "distance": 150,
                         "color": "#8b5cf6",
-                        "opacity": 0.3,
-                        "width": 1.5,
-                        "blink": true
+                        "opacity": 0.2,
+                        "width": 1
                     },
                     "move": {
                         "enable": true,
-                        "speed": 0.5, // Start with slower base speed
+                        "speed": 1,
                         "direction": "none",
-                        "random": true,
+                        "random": false,
                         "straight": false,
-                        "out_mode": "bounce",
-                        "bounce": true,
+                        "out_mode": "out",
+                        "bounce": false,
                         "attract": {
                             "enable": true,
-                            "rotateX": 800,
-                            "rotateY": 1600
-                        },
-                        "warp": true
-                    },
-                    "twinkle": {
-                        "particles": {
-                            "enable": true,
-                            "frequency": 0.05,
-                            "opacity": 1
+                            "rotateX": 600,
+                            "rotateY": 1200
                         }
                     }
                 },
@@ -1046,32 +1076,23 @@
                     "events": {
                         "onhover": {
                             "enable": true,
-                            "mode": "bubble"
+                            "mode": "grab"
                         },
                         "onclick": {
                             "enable": true,
-                            "mode": "repulse"
+                            "mode": "push"
                         },
                         "resize": true
                     },
                     "modes": {
-                        "bubble": {
-                            "distance": 200,
-                            "size": 10,
-                            "duration": 2,
-                            "opacity": 0.8,
-                            "speed": 3
-                        },
-                        "repulse": {
-                            "distance": 150,
-                            "duration": 0.4
-                        },
-                        "connect": {
-                            "distance": 180,
+                        "grab": {
+                            "distance": 140,
                             "line_linked": {
                                 "opacity": 0.5
-                            },
-                            "radius": 180
+                            }
+                        },
+                        "push": {
+                            "particles_nb": 4
                         }
                     }
                 },
@@ -1105,101 +1126,6 @@
                 }
             });
         });
-
-        // FAQ Accordion with animations
-        document.querySelectorAll('.faq-question').forEach(button => {
-            button.addEventListener('click', () => {
-                const answer = button.nextElementSibling;
-                const icon = button.querySelector('i');
-                
-                // Toggle current answer
-                if (answer.classList.contains('show')) {
-                    answer.classList.remove('show');
-                    icon.classList.remove('rotate-180');
-                } else {
-                    // Close other open answers first
-                    document.querySelectorAll('.faq-answer.show').forEach(openAnswer => {
-                        if (openAnswer !== answer) {
-                            openAnswer.classList.remove('show');
-                            openAnswer.previousElementSibling.querySelector('i').classList.remove('rotate-180');
-                        }
-                    });
-                    
-                    // Open current answer
-                    answer.classList.add('show');
-                    icon.classList.add('rotate-180');
-                }
-            });
-        });
-
-        // Remove hidden class from answers since we're using show/hide via max-height now
-        document.querySelectorAll('.faq-answer').forEach(answer => {
-            answer.classList.remove('hidden');
-        });
-        
-        // Section scroll animations
-        const sections = document.querySelectorAll('section');
-        const sectionObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        });
-
-        sections.forEach(section => {
-            sectionObserver.observe(section);
-        });
-
-        // Scroll observation for gradient effects
-        const gradientElements = document.querySelectorAll('.gradient-text');
-        const observerOptions = {
-            threshold: 0.5,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('gradient-scroll');
-                } else {
-                    entry.target.classList.remove('gradient-scroll');
-                }
-            });
-        }, observerOptions);
-
-        gradientElements.forEach(element => {
-            observer.observe(element);
-        });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    // Smooth scroll with offset for header
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Add pulse animation to target section
-                    targetElement.style.animation = 'pulse 1s';
-                    setTimeout(() => {
-                        targetElement.style.animation = '';
-                    }, 1000);
-                }
-            });
-        });
-        
         // Mobile menu toggle
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -1221,8 +1147,46 @@
             }, 300);
         });
         
-        // Close menu when clicking on links
-        document.querySelectorAll('#mobile-menu nav a').forEach(link => {
+        // Mobile account menu toggle
+        const mobileAccountButton = document.getElementById('mobile-account-button');
+        const mobileAccountMenu = document.getElementById('mobile-account-menu');
+        
+        mobileAccountButton.addEventListener('click', () => {
+            if (mobileAccountMenu.classList.contains('hidden')) {
+                mobileAccountMenu.classList.remove('hidden');
+            } else {
+                mobileAccountMenu.classList.add('hidden');
+            }
+        });
+
+        // Mobile login/register links
+        document.querySelector('.mobile-login-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            mobileMenu.classList.add('opacity-0');
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300);
+            
+            loginModal.classList.remove('hidden');
+            setTimeout(() => {
+                loginModal.classList.add('opacity-100');
+                document.querySelector('#login-modal > div').classList.remove('scale-95');
+            }, 10);
+        });
+
+        document.querySelector('.mobile-register-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            mobileMenu.classList.add('opacity-0');
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300);
+            showRegistrationModal();
+        });
+
+        // Close menu when clicking on other links
+        document.querySelectorAll('#mobile-menu nav a:not(.mobile-login-link):not(.mobile-register-link)').forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.add('opacity-0');
                 setTimeout(() => {
@@ -1232,6 +1196,240 @@
             });
         });
 
+        // Account menu toggle
+        const accountMenuButton = document.getElementById('account-menu-button');
+        const accountMenu = document.getElementById('account-menu');
+        
+        accountMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (accountMenu.classList.contains('hidden')) {
+                accountMenu.classList.remove('hidden');
+            } else {
+                accountMenu.classList.add('hidden');
+            }
+        });
+
+        // Close account menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!accountMenu.contains(e.target) && e.target !== accountMenuButton) {
+                accountMenu.classList.add('hidden');
+            }
+        });
+
+        // Modals
+        const loginLink = document.getElementById('login-link');
+        const loginModal = document.getElementById('login-modal');
+        const closeLogin = document.getElementById('close-login');
+        const registrationModal = document.getElementById('registration-modal');
+        const closeRegistration = document.getElementById('close-registration');
+        
+        loginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            accountMenu.classList.add('hidden');
+            loginModal.classList.remove('hidden');
+            setTimeout(() => {
+                loginModal.classList.add('opacity-100');
+                document.querySelector('#login-modal > div').classList.remove('scale-95');
+            }, 10);
+        });
+
+        closeLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginModal.classList.remove('opacity-100');
+            document.querySelector('#login-modal > div').classList.add('scale-95');
+            setTimeout(() => {
+                loginModal.classList.add('hidden');
+            }, 300);
+        });
+
+        // Switch back to login from registration
+        document.getElementById('show-login').addEventListener('click', function(e) {
+            e.preventDefault();
+            // Close registration modal
+            registrationModal.classList.remove('opacity-100');
+            document.querySelector('#registration-modal > div').classList.add('scale-95');
+            setTimeout(() => {
+                registrationModal.classList.add('hidden');
+            }, 300);
+            
+            // Open login modal
+            loginModal.classList.remove('hidden');
+            setTimeout(() => {
+                loginModal.classList.add('opacity-100');
+                document.querySelector('#login-modal > div').classList.remove('scale-95');
+            }, 10);
+        });
+
+        // Close modal when clicking outside
+        loginModal.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.classList.remove('opacity-100');
+                document.querySelector('#login-modal > div').classList.add('scale-95');
+                setTimeout(() => {
+                    loginModal.classList.add('hidden');
+                }, 300);
+            }
+        });
+
+        // Show registration modal from login modal
+        document.getElementById('show-register').addEventListener('click', function(e) {
+            e.preventDefault();
+            // Close login modal
+            loginModal.classList.remove('opacity-100');
+            document.querySelector('#login-modal > div').classList.add('scale-95');
+            setTimeout(() => {
+                loginModal.classList.add('hidden');
+            }, 300);
+            showRegistrationModal();
+        });
+
+        // Handle login form submission
+        document.querySelector('#login-modal form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const identifier = document.getElementById('login-identifier').value;
+            const rememberMe = document.getElementById('remember-login').checked;
+            
+            // Save to cookies if "Remember me" is checked
+            if (rememberMe) {
+                setCookie('fc_username', identifier, 30);
+            }
+            
+            // Update UI to show logged in state
+            accountMenuButton.innerHTML = `<i class="fas fa-user-circle mr-2"></i> ${identifier}`;
+            
+            // Close modal with animation
+            loginModal.classList.remove('opacity-100');
+            document.querySelector('#login-modal > div').classList.add('scale-95');
+            setTimeout(() => {
+                loginModal.classList.add('hidden');
+            }, 300);
+            
+            // Show success message (optional)
+            alert(`Добро пожаловать, ${identifier}!`);
+        });
+
+        // Check for saved credentials on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedEmail = getCookie('fc_email');
+            const savedUsername = getCookie('fc_username');
+            
+            if (savedEmail && savedUsername) {
+                // Auto-login logic would go here
+                // For now just show logged in state
+                accountMenuButton.innerHTML = `<i class="fas fa-user-circle mr-2"></i> ${savedUsername}`;
+            }
+        });
+
+        // Cookie functions
+        function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days*24*60*60*1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i=0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length);
+            }
+            return null;
+        }
+
+        // Registration link handler (desktop)
+        const registerLink = document.getElementById('register-link');
+        if (registerLink) {
+            registerLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                accountMenu.classList.add('hidden');
+                showRegistrationModal();
+            });
+        }
+
+        function showRegistrationModal() {
+            registrationModal.classList.remove('hidden');
+            setTimeout(() => {
+                registrationModal.classList.add('opacity-100');
+                document.querySelector('#registration-modal > div').classList.remove('scale-95');
+            }, 10);
+        }
+
+        closeRegistration.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeRegistrationModal();
+        });
+
+        function closeRegistrationModal() {
+            registrationModal.classList.remove('opacity-100');
+            document.querySelector('#registration-modal > div').classList.add('scale-95');
+            setTimeout(() => {
+                registrationModal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Close modal when clicking outside
+        registrationModal.addEventListener('click', (e) => {
+            if (e.target === registrationModal) {
+                closeRegistrationModal();
+            }
+        });
+
+        // Google Sign-In handler
+        function handleGoogleSignIn(response) {
+            const profile = response.credential;
+            const decoded = jwt_decode(profile);
+            
+            // Save user data
+            setCookie('fc_email', decoded.email, 30);
+            setCookie('fc_username', decoded.name, 30);
+            
+            // Update UI
+            accountMenuButton.innerHTML = `<i class="fas fa-user-circle mr-2"></i> ${decoded.name}`;
+            
+            // Close modal
+            registrationModal.classList.remove('opacity-100');
+            document.querySelector('#registration-modal > div').classList.add('scale-95');
+            setTimeout(() => {
+                registrationModal.classList.add('hidden');
+            }, 300);
+            
+            alert(`Добро пожаловать, ${decoded.name}!`);
+        }
+
+        // Handle form submission
+        document.querySelector('#registration-modal form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value;
+            const rememberMe = document.getElementById('remember-me').checked;
+            
+            // Save to cookies if "Remember me" is checked
+            if (rememberMe) {
+                setCookie('fc_email', email, 30);
+                setCookie('fc_username', username, 30);
+            }
+            
+            // Update UI to show logged in state
+            accountMenuButton.innerHTML = `<i class="fas fa-user-circle mr-2"></i> ${username}`;
+            
+            // Close modal with animation
+            registrationModal.classList.remove('opacity-100');
+            document.querySelector('#registration-modal > div').classList.add('scale-95');
+            setTimeout(() => {
+                registrationModal.classList.add('hidden');
+            }, 300);
+            
+            // Show success message (optional)
+            alert(`Добро пожаловать, ${username}!`);
+        });
         // Cursor particles
         const cursorParticles = particlesJS('cursor-particles', {
             "particles": {
