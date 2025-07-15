@@ -58,16 +58,63 @@
         body.loaded {
             opacity: 1;
         }
+
+        /* Window centering animation */
+        @keyframes centerWindow {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .window-animate {
+            animation: centerWindow 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        /* Channel switch animation */
+        .os-card {
+            transition: all 0.4s ease-out;
+        }
+
+        .os-card.hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            position: absolute;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .os-card {
+            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .os-card.animate-in {
+            animation: centerWindow 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
         
-        /* Particles container */
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            background-color: #0f0f13;
+        /* Snow styles */
+        .snowflake {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) translateX(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) translateX(10vw);
+                opacity: 0;
+            }
         }
         
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -205,6 +252,12 @@
             transition: all 0.3s ease;
         }
 
+        .download-card:hover .fa-chrome {
+            transform: scale(1.1);
+            text-shadow: 0 0 20px rgba(239, 68, 68, 0.8);
+            transition: all 0.3s ease;
+        }
+
         .android-card:hover {
             box-shadow: 0 8px 15px rgba(60, 185, 60, 0.3);
             border-color: rgba(60, 185, 60, 0.7);
@@ -318,8 +371,8 @@
     </style>
 </head>
 <body class="min-h-screen">
-    <!-- Particles Background -->
-    <div id="particles-js"></div>
+    <!-- Snow Background -->
+    <div class="snow-container fixed inset-0 z-0 pointer-events-none overflow-hidden"></div>
     <div id="cursor-particles" class="fixed pointer-events-none"></div>
     
     <!-- Header -->
@@ -331,11 +384,30 @@
                 </div>
                 <h1 class="text-2xl font-bold gradient-text">FlowCross</h1>
             </div>
-            <nav class="hidden md:flex items-center space-x-8">
-                <a href="#features" class="text-gray-300 hover:text-purple-400 transition scroll-link">Возможности</a>
-                <a href="#modules" class="text-gray-300 hover:text-purple-400 transition scroll-link">Модули</a>
-                <a href="#download" class="text-gray-300 hover:text-purple-400 transition scroll-link">Скачать</a>
-                <a href="#premium" class="text-gray-300 hover:text-purple-400 transition scroll-link">Покупка</a>
+
+            <!-- Mobile buttons (visible only on small screens) -->
+            <div class="md:hidden flex items-center space-x-4">
+                <button id="mobile-search-button" class="text-gray-300 hover:text-purple-400">
+                    <i class="fas fa-search text-xl"></i>
+                </button>
+                <button id="mobile-account-button" class="text-gray-300 hover:text-purple-400">
+                    <i class="fas fa-user-circle text-xl"></i>
+                </button>
+                <button id="mobile-menu-button" class="text-gray-300 hover:text-purple-400">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+            <!-- Desktop navigation (hidden on mobile) -->
+            <div class="hidden md:flex items-center space-x-4">
+                <div class="relative mr-4">
+                    <input type="text" id="search-input" placeholder="Поиск..." 
+                        class="bg-gray-800/20 border border-gray-700 rounded-full px-4 py-2 pl-10 text-white focus:border-white-500 focus:ring-purple-500 backdrop-blur-sm w-48 transition-all duration-300 focus:w-64">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <button id="desktop-menu-button" class="text-gray-300 hover:text-purple-400 transition">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
                 <div class="relative group">
                     <button id="account-menu-button" class="text-gray-300 hover:text-purple-400 transition flex items-center">
                         <i class="fas fa-user-circle mr-2"></i> Аккаунт
@@ -353,11 +425,42 @@
                     </div>
                 </div>
             </nav>
-            <button id="mobile-menu-button" class="md:hidden text-gray-300 hover:text-purple-400">
-                <i class="fas fa-bars text-2xl"></i>
-            </button>
+            <div class="md:hidden flex items-center space-x-4">
+                <div class="relative mr-2 hidden" id="mobile-search-container">
+                    <input type="text" id="mobile-search-input" placeholder="Поиск..." 
+                        class="bg-gray-800/20 border border-gray-700 rounded-full px-4 py-2 pl-10 text-white focus:border-white-500 focus:ring-purple-500 backdrop-blur-sm w-full transition-all duration-300">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <button id="mobile-menu-button" class="text-gray-300 hover:text-purple-400">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
         </div>
     </header>
+
+    <!-- Mobile Search (hidden by default) -->
+    <div id="mobile-search-container" class="fixed top-0 left-0 w-full bg-black-900/90 backdrop-blur-sm z-40 p-4 hidden">
+        <div class="container mx-auto flex items-center">
+            <div class="relative flex-1 mr-4">
+                <input type="text" id="mobile-search-input" placeholder="Поиск..." 
+                    class="w-full bg-gray-800/20 border border-gray-700 rounded-full px-4 py-2 pl-10 text-white focus:border-white-500 focus:ring-purple-500 backdrop-blur-sm">
+                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+            <button id="close-mobile-search" class="text-gray-300 hover:text-purple-400 text-xl">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Desktop Menu Dropdown -->
+    <div id="desktop-menu" class="fixed z-40 bg-black/30 backdrop-blur-lg hidden opacity-0 transition-all duration-300 rounded-xl shadow-lg" style="top: 90px; right: 20px; width: 220px;">
+        <div class="p-4 flex flex-col space-y-3 border border-gray-700/30 rounded-xl">
+            <a href="#features" class="text-gray-300 hover:text-purple-400 transition scroll-link">Возможности</a>
+            <a href="#modules" class="text-gray-300 hover:text-purple-400 transition scroll-link">Модули</a>
+            <a href="#download" class="text-gray-300 hover:text-purple-400 transition scroll-link">Скачать</a>
+            <a href="#premium" class="text-gray-300 hover:text-purple-400 transition scroll-link">Покупка</a>
+        </div>
+    </div>
 
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md hidden opacity-0 transition-all duration-300">
@@ -400,8 +503,10 @@
                     <a href="https://t.me/FlowCross" class="text-gray-300 hover:text-blue-400 text-xl">
                         <i class="fab fa-telegram"></i>
                     </a>
+                    <a href="https://www.tiktok.com/@flowcrossofficial" class="text-gray-300 hover:text-pink-00 text-xl">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
                 </div>
-                
             </div>
         </div>
     </div>
@@ -417,7 +522,7 @@
                     FlowCross - это современный лаунчер с уникальными возможностями, высокой производительностью и стильным дизайном.
                 </p>
                 <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                    <a href="#download" class="download-btn bg-purple-600/45 hover:bg-purple-700/95 text-white font-semibold py-3 px-8 rounded-lg text-center">
+                    <a href="#download" class="download-btn bg-purple-600/100 hover:bg-purple-700/95 text-white font-semibold py-3 px-8 rounded-lg text-center">
                         <i class="fas fa-download mr-2 hover:text-purple-200"></i> Скачать сейчас
                     </a>
                     <a href="#features" class="border border-purple-600 text-purple-400 hover:bg-purple-900/30 font-semibold py-3 px-8 rounded-lg text-center transition scroll-link">
@@ -446,7 +551,9 @@
     <section id="features" class="py-20 px-4 sm:px-10 lg:px-20 bg-white-900/50">
         <div class="container mx-auto">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 gradient-text">Почему FlowCross?</h2>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 gradient-text flex items-center justify-center">
+                    <i class="fas fa-question-circle mr-3"></i> Почему FlowCross?
+                </h2>
                 <p class="text-gray-400 max-w-2xl mx-auto">Инновационные возможности, которые делают игру удобнее</p>
             </div>
             
@@ -535,7 +642,9 @@
     <section id="modules" class="py-20 px-4 sm:px-10 lg:px-20">
         <div class="container mx-auto">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 gradient-text">Модули FlowCross</h2>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 gradient-text flex items-center justify-center">
+                    <i class="fas fa-puzzle-piece mr-3"></i> Модули FlowCross
+                </h2>
                 <p class="text-gray-400 max-w-2xl mx-auto">Дополнения для кастомизации вашего лаунчера</p>
             </div>
             
@@ -546,21 +655,21 @@
                         <i class="fas fa-paint-brush text-purple-400 text-xl hover:text-purple-300 transition"></i>
                     </div>
                     <h3 class="text-xl font-semibold mb-3">Темы оформления</h3>
-                    <p class="text-gray-400 mb-4">полторы уникальные темы для персонализации внешнего вида лаунчера.</p>
-                    <a href="https://cloud.mail.ru/public/C27x/hq3HEkaQ3" target="_blank" class="text-purple-400 hover:text-purple-300 text-sm font-medium transition">
-                        <i class="fas fa-download mr-1"></i> Скачать
+                    <p class="text-gray-400 mb-4">Полторы уникальные темы для персонализации внешнего вида лаунчера! Будьте уникальнейшим с помощью кастомизации!</p>
+                    <a href="#" target="_blank" class="text-gray-400/50 hover:text-gray-300 text-sm font-medium transition cursor-not-allowed">
+                        <i class="fas fa-clock mr-1"></i> Скачать
                     </a>
                 </div>
                 
                 <!-- Module 2 -->
-                <div class="feature-card p-6 rounded-xl border border-gray-800">
-                    <div class="w-12 h-12 rounded-lg bg-purple-600/20 flex items-center justify-center mb-4">
-                        <i class="fas fa-gamepad text-purple-400 text-xl"></i>
+                <div class="feature-card p-6 rounded-xl border border-gray-800 hover:border-purple-500 transition-colors duration-1000">
+                    <div class="w-12 h-12 rounded-lg bg-purple-600/20 flex items-center justify-center mb-4 hover:bg-purple-600/30 transition">
+                        <i class="fas fa-gamepad text-purple-400 text-xl hover:text-purple-300 transition"></i>
                     </div>
-                    <h3 class="text-xl font-semibold mb-3">Игровые пресеты</h3>
-                    <p class="text-gray-400 mb-4">Готовые конфигурации настроек для разных стилей игры.</p>
-                    <a href="#" class="text-gray-500 cursor-not-allowed text-sm font-medium">
-                        <i class="fas fa-download mr-1"></i> Скоро
+                    <h3 class="text-xl font-semibold mb-3">Перформанс</h3>
+                    <p class="text-gray-400 mb-4">Улучшение игрового процесса путем ввода специального модуля для настройки лаунчера и рекомендаций.</p>
+                    <a href="#" target="_blank" class="text-gray-400/50 hover:text-gray-300 text-sm font-medium transition cursor-not-allowed">
+                        <i class="fas fa-clock mr-1"></i> Скачать
                     </a>
                 </div>
                 
@@ -617,56 +726,90 @@
     <section id="download" class="py-20 px-4 sm:px-10 lg:px-20">
         <div class="container mx-auto">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 gradient-text">Скачать FlowCross</h2>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 gradient-text flex items-center justify-center">
+                    <i class="fas fa-download mr-3"></i> Скачать FlowCross
+                </h2>
                 <p class="text-gray-400 max-w-2xl mx-auto">Выберите версию для вашей операционной системы</p>
+                
+                <!-- Channel Switcher -->
+                <div class="flex justify-center mt-4 mb-8">
+                    <div class="inline-flex rounded-full bg-gray-800/10 p-1 border border-gray-700 backdrop-blur-sm">
+                        <button id="beta-channel" class="px-4 py-2 rounded-full bg-purple-600 text-white font-medium transition-all duration-200 transform hover:scale-105 focus:outline-none">
+                            Beta
+                        </button>
+                        <button id="release-channel" class="px-4 py-2 rounded-full text-gray-300 font-medium transition-all duration-200 transform hover:scale-105 focus:outline-none">
+                            Release
+                        </button>
+                        <button id="dev-channel" class="px-4 py-2 rounded-full text-gray-200 font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none">
+                            Dev
+                        </button>
+                    </div>
+                </div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 max-w-6xl mx-auto">
                 <!-- Windows Download -->
-                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-blue-500 hover:border-opacity-50 download-card windows-card backdrop-blur-sm hover:shadow-[0_0_20px_rgba(96,165,250,0.3)] group">
+                <div class="os-card windows bg-gray-800/30 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-blue-500 hover:border-opacity-50 download-card windows-card backdrop-blur-sm hover:shadow-[0_0_20px_rgba(96,165,250,0.3)] group">
                     <i class="fab fa-windows text-5xl text-blue-400 mb-4 transition-all duration-300"></i>
                     <h3 class="text-xl font-semibold mb-2">Windows</h3>
-                    <p class="text-gray-400 text-center mb-6">Windows 10/11 (beta)</p>
-                    <a href="https://cloud.mail.ru/public/FRrW/7siWKY5pw" class="download-btn bg-gray-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg w-full text-center transition-all duration-300 h-[48px] flex items-center justify-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
-                        <i class="fas fa-download mr-2"></i> Скачать .exe
+                    <p class="text-gray-400 text-center mb-6">Windows 10/11</p>
+                    <a href="https://www.dropbox.com/scl/fi/soi5m12mfm2rzx4hdzjfh/FlowcrossBetaInstaller.exe?rlkey=mzl3izv56an80zi03o1sadwk6&st=4k0e5u4n&dl=0" class="download-btn bg-gray-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg w-full text-center transition-all duration-300 h-[48px] flex items-center justify-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);" id="windows-download-btn">
+                        <i class="fas fa-download mr-2"></i> Скачать
                     </a>
-                    <div id="windows-for-you" class="text-xs text-blue-100 bg-blue-500/80 px-2 py-1 rounded-full mt-1 hidden">Для вас</div>
+                    <div id="windows-soon-btn" class="download-btn bg-gray-500/20 hover:bg-gray-500/30 text-gray-400 font-semibold py-3 px-6 rounded-lg w-full text-center h-[48px] flex items-center justify-center hidden" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.1);">
+                        <i class="fas fa-clock mr-2 text-gray-400"></i> Скоро
+                    </div>
+                    <div id="recommended-badge" class="mt-2 bg-blue-500/20 text-blue-400 text-xs font-medium py-1 px-2 rounded-full inline-flex items-center hidden">
+                        <i class="fas fa-check-circle mr-1"></i> Стабильная
+                    </div>
                 </div>
                 
                 <!-- macOS -->
-                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-gray-300 hover:border-opacity-50 download-card macos-card backdrop-blur-sm hover:shadow-[0_0_20px_rgba(209,213,219,0.3)]">
+                <div class="os-card macos bg-gray-800/30 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-gray-300 hover:border-opacity-50 download-card macos-card backdrop-blur-sm hover:shadow-[0_0_20px_rgba(209,213,219,0.3)]">
                     <i class="fab fa-apple text-5xl text-gray-300 mb-4 transition-all duration-300"></i>
                     <h3 class="text-xl font-semibold mb-2">macOS</h3>
                     <p class="text-gray-400 text-center mb-6">macOS 14+</p>
                     <a href="#" class="download-btn bg-gray-600 cursor-not-allowed text-gray-400 font-semibold py-3 px-6 rounded-lg w-full text-center h-[48px] flex items-center justify-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
                         <i class="fas fa-download mr-2"></i> Скоро
                     </a>
-                    <div id="android-for-you" class="text-xs text-blue-100 bg-blue-500/80 px-2 py-1 rounded-full mt-1 hidden">Для вас</div>
-                    <div id="linux-for-you" class="text-xs text-blue-100 bg-blue-500/80 px-2 py-1 rounded-full mt-1 hidden">Для вас</div>
-                    <div id="macos-for-you" class="text-xs text-blue-100 bg-blue-500/80 px-2 py-1 rounded-full mt-1 hidden">Для вас</div>
                 </div>
                 
                 <!-- Linux -->
-                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-yellow-400 hover:border-opacity-50 download-card linux-card backdrop-blur-sm hover:shadow-[0_0_20px_rgba(234,179,8,0.3)]">
+                <div class="os-card linux bg-gray-800/30 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-yellow-400 hover:border-opacity-50 download-card linux-card backdrop-blur-sm hover:shadow-[0_0_20px_rgba(234,179,8,0.3)]">
                     <i class="fab fa-linux text-5xl text-yellow-400 mb-4 transition-all duration-300"></i>
                     <h3 class="text-xl font-semibold mb-2">Linux</h3>
-                    <p class="text-gray-400 text-center mb-6">Debian, Ubuntu, Fedora</p>
+                    <p class="text-gray-400 text-center mb-6">Debian, Ubuntu</p>
                     <a href="#" class="download-btn bg-gray-600 cursor-not-allowed text-gray-400 font-semibold py-3 px-6 rounded-lg w-full text-center h-[48px] flex items-center justify-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
                         <i class="fas fa-download mr-2"></i> Скоро
                     </a>
                 </div>
 
                 <!-- Android -->
-                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-green-500 hover:border-opacity-50 download-card android-card backdrop-blur-sm hover:shadow-[0_0_20px_rgba(74,222,128,0.3)]">
+                <div class="os-card android bg-gray-800/30 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-green-500 hover:border-opacity-50 download-card android-card backdrop-blur-sm hover:shadow-[0_0_20px_rgba(74,222,128,0.3)]">
                     <i class="fab fa-android text-5xl text-green-400 mb-4 transition-all duration-300"></i>
                     <h3 class="text-xl font-semibold mb-2">Android</h3>
-                    <p class="text-gray-400 text-center mb-6">Android 12+</p>
+                    <p class="text-gray-400 text-center mb-6">Android 14+</p>
+                    <a href="#" class="download-btn bg-gray-600 cursor-not-allowed text-gray-400 font-semibold py-3 px-6 rounded-lg w-full text-center h-[48px] flex items-center justify-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
+                        <i class="fas fa-download mr-2"></i> Скоро
+                    </a>
+                </div>
+
+                <!-- Chrome OS -->
+                <div class="os-card chrome bg-gray-800/30 rounded-xl p-6 border border-gray-700 flex flex-col items-center transition-all duration-300 hover:border-red-500 hover:border-opacity-50 download-card backdrop-blur-sm hover:shadow-[0_0_20px_rgba(239,68,68,0.3)] group/chrome">
+                    <i class="fab fa-chrome text-5xl text-red-400 mb-4 transition-all duration-300 group-hover/chrome:text-red-300 group-hover/chrome:drop-shadow-[0_0_15px_rgba(239,68,68,0.8)]"></i>
+                    <h3 class="text-xl font-semibold mb-2">Chrome OS</h3>
+                    <p class="text-gray-400 text-center mb-6">Chrome OS 138+</p>
                     <a href="#" class="download-btn bg-gray-600 cursor-not-allowed text-gray-400 font-semibold py-3 px-6 rounded-lg w-full text-center h-[48px] flex items-center justify-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
                         <i class="fas fa-download mr-2"></i> Скоро
                     </a>
                 </div>
             </div>
-            
+        </div>
+    </section>
+
+    <!-- Other Installation Methods -->
+    <section class="px-4 sm:px-10 lg:px-20">
+        <div class="container mx-auto">
             <div class="mt-12 bg-gray-800/20 rounded-xl p-6 max-w-4xl mx-auto border border-gray-700/50 backdrop-blur-sm hover:bg-gray-800/30 transition">
                 <h3 class="text-xl font-semibold mb-4 text-center">Другие способы установки</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -681,7 +824,7 @@
         </div>
     </section>
 
-<!-- Таймер обратного отсчета с частицами -->
+    <!-- Таймер обратного отсчета с частицами -->
 <section class="py-10 px-4 sm:px-10 lg:px-20 relative">
     <!-- Контейнер для частиц -->
     <div id="countdown-particles" class="absolute inset-0 w-full h-full pointer-events-none"></div>
@@ -931,6 +1074,86 @@
 
 
 
+    <script>
+        // Channel switcher functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const channels = {
+                beta: document.getElementById('beta-channel'),
+                release: document.getElementById('release-channel'),
+                dev: document.getElementById('dev-channel')
+            };
+
+            function switchChannel(activeChannel) {
+                // Reset all buttons
+                Object.values(channels).forEach(btn => {
+                    btn.classList.remove(
+                        'bg-purple-600', 'text-white',
+                        'bg-red-600', 
+                        'bg-green-600'
+                    );
+                    btn.classList.add('text-gray-300');
+                });
+
+                // First hide all cards with animation
+                document.querySelectorAll('.os-card').forEach(card => {
+                    card.classList.add('hidden');
+                });
+
+                // Style active button and show relevant cards
+                if (activeChannel === 'beta') {
+                    channels.beta.classList.remove('text-gray-300');
+                    channels.beta.classList.add('bg-purple-600', 'text-white');
+                    // Show all OS cards in beta channel
+                    document.querySelectorAll('.os-card').forEach(card => {
+                        setTimeout(() => {
+                            card.classList.remove('hidden');
+                            card.classList.add('animate-in');
+                        }, 100);
+                    });
+                    // Enable Windows download in beta channel
+                    document.querySelector('#windows-download-btn').classList.remove('hidden');
+                    document.querySelector('#windows-soon-btn').classList.add('hidden');
+                } else if (activeChannel === 'release') {
+                    channels.release.classList.remove('text-gray-300');
+                    channels.release.classList.add('bg-red-600', 'text-white');
+                    // Show Linux, MacOS and Windows (disabled) in release
+                    document.querySelectorAll('.os-card.linux, .os-card.macos, .os-card.windows').forEach(card => {
+                        setTimeout(() => {
+                            card.classList.remove('hidden');
+                            card.classList.add('animate-in');
+                        }, 100);
+                    });
+                    // Disable Windows download in release channel
+                    document.querySelector('#windows-download-btn').classList.add('hidden');
+                    document.querySelector('#windows-soon-btn').classList.remove('hidden');
+                } else if (activeChannel === 'dev') {
+                    channels.dev.classList.remove('text-gray-300');
+                    channels.dev.classList.add('bg-green-600', 'text-white');
+                    // Show Linux and Windows (disabled) in dev channel
+                    document.querySelectorAll('.os-card.linux, .os-card.windows').forEach(card => {
+                        setTimeout(() => {
+                            card.classList.remove('hidden');
+                            card.classList.add('animate-in');
+                        }, 100);
+                    });
+                    // Disable Windows download in dev channel
+                    document.querySelector('#windows-download-btn').classList.add('hidden');
+                    document.querySelector('#windows-soon-btn').classList.remove('hidden');
+                }
+
+                console.log(`Switched to ${activeChannel} channel`);
+            }
+
+            // Set default channel
+            switchChannel('beta');
+
+            // Add click handlers
+            channels.beta.addEventListener('click', () => switchChannel('beta'));
+            channels.release.addEventListener('click', () => switchChannel('release'));
+            channels.dev.addEventListener('click', () => switchChannel('dev'));
+        });
+    </script>
+
     <!-- Footer -->
     <footer class="py-12 px-4 sm:px-10 lg:px-20 bg-black-900" id="main-footer">
         <div class="container mx-auto">
@@ -942,18 +1165,79 @@
                     <h2 class="text-xl font-bold gradient-text" style="text-shadow: 0 0 5px rgba(139, 92, 246, 0.3)">FlowCross</h2>
                 </div>
                 
-                <div class="flex flex-col items-center space-y-2">
-                    <div class="text-gray-500 text-sm">
+                <div class="flex flex-col items-center">
+                    <div class="text-gray-500 text-sm mb-2">
                         &copy; 2025 FlowCross LLC. Все права защищены.
                     </div>
-                    <div class="text-gray-400 text-xs">v1.1.1</div>
-                    <a href="https://t.me/FlowCross" class="text-gray-400 hover:text-blue-400 transition">
-                        <i class="fab fa-telegram text-lg hover:text-blue-400"></i>
-                    </a>
+                    <div class="flex space-x-4">
+                        <a href="https://t.me/FlowCross" class="text-gray-400 hover:text-blue-400 transition">
+                            <i class="fab fa-telegram text-lg hover:text-blue-400"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@flowcrossofficial" class="text-gray-400 hover:text-pink-500 transition">
+                            <i class="fab fa-tiktok text-lg hover:text-pink-500"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </footer>
+
+    <!-- Search functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const mobileSearchInput = document.getElementById('mobile-search-input');
+            
+            function performSearch(query) {
+                if (!query) return;
+                
+                const elements = document.querySelectorAll('h1, h2, h3, h4, p, a, span, li');
+                let found = false;
+                
+                elements.forEach(el => {
+                    if (el.textContent.toLowerCase().includes(query.toLowerCase())) {
+                        found = true;
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        el.style.backgroundColor = 'rgba(139, 92, 246, 0.3)';
+                        setTimeout(() => {
+                            el.style.backgroundColor = '';
+                        }, 3000);
+                    }
+                });
+                
+                if (!found) {
+                    alert('Ничего не найдено');
+                }
+            }
+            
+            // Handle search for both desktop and mobile
+            [searchInput, mobileSearchInput].forEach(input => {
+                input?.addEventListener('focus', function() {
+                    this.style.width = '12rem'; // Match the expanded width
+                });
+                
+                input?.addEventListener('blur', function() {
+                    if (!this.value) {
+                        this.style.width = '2.5rem';
+                    }
+                });
+                
+                input?.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        performSearch(this.value);
+                        // Close mobile menu if open
+                        if (window.innerWidth < 768) {
+                            mobileMenu.classList.add('opacity-0');
+                            setTimeout(() => {
+                                mobileMenu.classList.add('hidden');
+                                document.body.style.overflow = '';
+                            }, 300);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 
     <!-- Google API -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -1107,35 +1391,39 @@
 
     <!-- OS Detection -->
     <script>
-        // Detect user's OS
         function detectOS() {
             const userAgent = window.navigator.userAgent;
             const platform = window.navigator.platform;
+            const macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'];
+            const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+            const iosPlatforms = ['iPhone', 'iPad', 'iPod'];
             
-            // Reset all "For you" labels
-            document.querySelectorAll('[id$="-for-you"]').forEach(el => el.classList.add('hidden'));
-            
-            // Detect OS and show appropriate label
-            if (/Android/i.test(userAgent)) {
-                document.getElementById('android-for-you').classList.remove('hidden');
-            } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
-                document.getElementById('macos-for-you').classList.remove('hidden');
-            } else if (/Win/i.test(platform)) {
-                document.getElementById('windows-for-you').classList.remove('hidden');
-            } else if (/Mac/i.test(platform)) {
-                document.getElementById('macos-for-you').classList.remove('hidden');
-            } else if (/Linux/i.test(platform) && !/Android/i.test(userAgent)) {
-                document.getElementById('linux-for-you').classList.remove('hidden');
+            if (macosPlatforms.indexOf(platform) !== -1) {
+                return 'MacOS';
+            } else if (iosPlatforms.indexOf(platform) !== -1) {
+                return 'iOS';
+            } else if (windowsPlatforms.indexOf(platform) !== -1) {
+                return 'Windows';
+            } else if (/Android/.test(userAgent)) {
+                return 'Android';
+            } else if (/Linux/.test(platform)) {
+                return 'Linux';
             }
+            
+            return 'Unknown';
         }
-        
-        // Run detection when page loads
-        document.addEventListener('DOMContentLoaded', detectOS);
+
+        // Show "For you" badge for matching OS
+        document.addEventListener('DOMContentLoaded', function() {
+            const os = detectOS();
+            if (os === 'Windows') {
+                document.getElementById('recommended-badge').classList.remove('hidden');
+            }
+        });
     </script>
 
-    <!-- JWT Decode and Particles.js -->
+    <!-- JWT Decode -->
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
         // Блокировка правой кнопки мыши
         document.addEventListener('contextmenu', function(e) {
@@ -1152,96 +1440,36 @@
             }
         });
 
-        // Initialize particles with new style
+        // Create snowflakes
         document.addEventListener('DOMContentLoaded', function() {
-            const particles = particlesJS('particles-js', {
-                "particles": {
-                    "number": {
-                        "value": 80,
-                        "density": {
-                            "enable": true,
-                            "value_area": 800
-                        }
-                    },
-                    "color": {
-                        "value": "#8b5cf6"
-                    },
-                    "shape": {
-                        "type": "circle",
-                        "stroke": {
-                            "width": 0,
-                            "color": "#000000"
-                        }
-                    },
-                    "opacity": {
-                        "value": 0.3,
-                        "random": true,
-                        "anim": {
-                            "enable": true,
-                            "speed": 1,
-                            "opacity_min": 0.1,
-                            "sync": false
-                        }
-                    },
-                    "size": {
-                        "value": 3,
-                        "random": true,
-                        "anim": {
-                            "enable": true,
-                            "speed": 2,
-                            "size_min": 1,
-                            "sync": false
-                        }
-                    },
-                    "line_linked": {
-                        "enable": true,
-                        "distance": 150,
-                        "color": "#8b5cf6",
-                        "opacity": 0.2,
-                        "width": 1
-                    },
-                    "move": {
-                        "enable": true,
-                        "speed": 1,
-                        "direction": "none",
-                        "random": false,
-                        "straight": false,
-                        "out_mode": "out",
-                        "bounce": false,
-                        "attract": {
-                            "enable": true,
-                            "rotateX": 600,
-                            "rotateY": 1200
-                        }
-                    }
-                },
-                "interactivity": {
-                    "detect_on": "canvas",
-                    "events": {
-                        "onhover": {
-                            "enable": true,
-                            "mode": "grab"
-                        },
-                        "onclick": {
-                            "enable": true,
-                            "mode": "push"
-                        },
-                        "resize": true
-                    },
-                    "modes": {
-                        "grab": {
-                            "distance": 140,
-                            "line_linked": {
-                                "opacity": 0.5
-                            }
-                        },
-                        "push": {
-                            "particles_nb": 4
-                        }
-                    }
-                },
-                "retina_detect": true
-            });
+            const snowContainer = document.querySelector('.snow-container');
+            const snowflakeCount = 150;
+            
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                
+                // Random size between 1 and 5px
+                const size = Math.random() * 4 + 1;
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                
+                // Random position
+                snowflake.style.left = `${Math.random() * 100}vw`;
+                snowflake.style.top = `${Math.random() * 100}vh`;
+                
+                // Random opacity
+                snowflake.style.opacity = Math.random();
+                
+                // Random animation duration (5-15s)
+                const duration = Math.random() * 10 + 5;
+                snowflake.style.animation = `fall ${duration}s linear infinite`;
+                
+                // Random delay
+                snowflake.style.animationDelay = `${Math.random() * 5}s`;
+                
+                snowContainer.appendChild(snowflake);
+            }
 
             // Show page after load with hero animation
             document.body.classList.add('loaded');
@@ -1329,6 +1557,48 @@
             });
         });
 
+        // Desktop menu toggle
+        const desktopMenuButton = document.getElementById('desktop-menu-button');
+        const desktopMenu = document.getElementById('desktop-menu');
+        
+        desktopMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (desktopMenu.classList.contains('hidden')) {
+                desktopMenu.classList.remove('hidden');
+                setTimeout(() => {
+                    desktopMenu.classList.remove('opacity-0');
+                }, 10);
+            } else {
+                desktopMenu.classList.add('opacity-0');
+                setTimeout(() => {
+                    desktopMenu.classList.add('hidden');
+                }, 300);
+            }
+        });
+
+        // Close desktop menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!desktopMenu.contains(e.target) && e.target !== desktopMenuButton) {
+                desktopMenu.classList.add('opacity-0');
+                setTimeout(() => {
+                    desktopMenu.classList.add('hidden');
+                }, 300);
+            }
+        });
+
+        // Mobile search toggle
+        const mobileSearchButton = document.getElementById('mobile-search-button');
+        const mobileSearchContainer = document.getElementById('mobile-search-container');
+        
+        mobileSearchButton.addEventListener('click', () => {
+            mobileSearchContainer.classList.toggle('hidden');
+            if (!mobileSearchContainer.classList.contains('hidden')) {
+                setTimeout(() => {
+                    document.getElementById('mobile-search-input').focus();
+                }, 100);
+            }
+        });
+
         // Mobile menu toggle
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -1374,7 +1644,9 @@
             loginModal.classList.remove('hidden');
             setTimeout(() => {
                 loginModal.classList.add('opacity-100');
-                document.querySelector('#login-modal > div').classList.remove('scale-95');
+                const modalContent = document.querySelector('#login-modal > div');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('window-animate');
             }, 10);
         });
 
@@ -1626,7 +1898,9 @@
             registrationModal.classList.remove('hidden');
             setTimeout(() => {
                 registrationModal.classList.add('opacity-100');
-                document.querySelector('#registration-modal > div').classList.remove('scale-95');
+                const modalContent = document.querySelector('#registration-modal > div');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('window-animate');
             }, 10);
         }
 
