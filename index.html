@@ -630,6 +630,7 @@
                     <a href="https://cloud.mail.ru/public/FRrW/7siWKY5pw" class="download-btn bg-gray-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg w-full text-center transition-all duration-300 h-[48px] flex items-center justify-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
                         <i class="fas fa-download mr-2"></i> Скачать .exe
                     </a>
+                    <div id="windows-for-you" class="text-xs text-blue-100 bg-blue-500/80 px-2 py-1 rounded-full mt-1 hidden">Для вас</div>
                 </div>
                 
                 <!-- macOS -->
@@ -640,6 +641,9 @@
                     <a href="#" class="download-btn bg-gray-600 cursor-not-allowed text-gray-400 font-semibold py-3 px-6 rounded-lg w-full text-center h-[48px] flex items-center justify-center" style="box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);">
                         <i class="fas fa-download mr-2"></i> Скоро
                     </a>
+                    <div id="android-for-you" class="text-xs text-blue-100 bg-blue-500/80 px-2 py-1 rounded-full mt-1 hidden">Для вас</div>
+                    <div id="linux-for-you" class="text-xs text-blue-100 bg-blue-500/80 px-2 py-1 rounded-full mt-1 hidden">Для вас</div>
+                    <div id="macos-for-you" class="text-xs text-blue-100 bg-blue-500/80 px-2 py-1 rounded-full mt-1 hidden">Для вас</div>
                 </div>
                 
                 <!-- Linux -->
@@ -1100,6 +1104,34 @@
             </div>
         </div>
     </div>
+
+    <!-- OS Detection -->
+    <script>
+        // Detect user's OS
+        function detectOS() {
+            const userAgent = window.navigator.userAgent;
+            const platform = window.navigator.platform;
+            
+            // Reset all "For you" labels
+            document.querySelectorAll('[id$="-for-you"]').forEach(el => el.classList.add('hidden'));
+            
+            // Detect OS and show appropriate label
+            if (/Android/i.test(userAgent)) {
+                document.getElementById('android-for-you').classList.remove('hidden');
+            } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+                document.getElementById('macos-for-you').classList.remove('hidden');
+            } else if (/Win/i.test(platform)) {
+                document.getElementById('windows-for-you').classList.remove('hidden');
+            } else if (/Mac/i.test(platform)) {
+                document.getElementById('macos-for-you').classList.remove('hidden');
+            } else if (/Linux/i.test(platform) && !/Android/i.test(userAgent)) {
+                document.getElementById('linux-for-you').classList.remove('hidden');
+            }
+        }
+        
+        // Run detection when page loads
+        document.addEventListener('DOMContentLoaded', detectOS);
+    </script>
 
     <!-- JWT Decode and Particles.js -->
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
