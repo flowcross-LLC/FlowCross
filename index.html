@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://i.pinimg.com/736x/29/bd/96/29bd9660dd4a07617461de609b550e4c.jpg" type="image/jpg">
     <title>Flowcross - Премиум лаунчер для Minecraft</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/f7b393d83e.js" crossorigin="anonymous"></script>
     <style>
+        :root {
+            --color-primary: var(--indigo-600);
+            --color-primary-dark: var(--indigo-700);
+        }
+        
         /* Active nav link styles */
         .active-nav-link {
             @apply border-indigo-500 text-gray-900 dark:text-white;
@@ -18,20 +24,80 @@
         .dark body {
             @apply bg-gray-900 text-gray-100;
         }
+        /* Основные цвета фона */
         .dark .bg-white {
             @apply bg-gray-800;
         }
         .dark .bg-gray-50 {
             @apply bg-gray-700;
         }
+        /* Текст */
         .dark .text-gray-500 {
             @apply text-gray-400;
         }
         .dark .text-gray-900 {
             @apply text-white;
         }
+        .dark .text-gray-700 {
+            @apply text-gray-300;
+        }
+        /* Границы */
         .dark .border-gray-200 {
             @apply border-gray-700;
+        }
+        .dark .border-gray-300 {
+            @apply border-gray-600;
+        }
+        /* Кнопки и акцентные элементы */
+        .dark .bg-indigo-600 {
+            @apply bg-indigo-700;
+        }
+        .dark .bg-indigo-100 {
+            @apply bg-indigo-900/30;
+        }
+        .dark .text-indigo-700 {
+            @apply text-indigo-400;
+        }
+        /* Тени */
+        .dark .shadow-sm {
+            @apply shadow-none border-b border-gray-700;
+        }
+        /* Акцентные фоны */
+        .dark .bg-indigo-50 {
+            @apply bg-indigo-900/20;
+        }
+        /* Ховер-эффекты */
+        .dark .hover\:bg-gray-200:hover {
+            @apply hover:bg-gray-700;
+        }
+        .dark .hover\:text-gray-500:hover {
+            @apply hover:text-gray-300;
+        }
+        /* Модальные окна */
+        .dark .modal-content {
+            @apply bg-gray-800 border-gray-700;
+        }
+        /* Футер */
+        .dark footer {
+            @apply bg-gray-800;
+        }
+        /* Карточки */
+        .dark .feature-card {
+            @apply bg-gray-800 border-gray-700;
+        }
+        .dark .feature-card:hover {
+            @apply shadow-lg border-gray-600;
+        }
+        /* Ценовые карточки */
+        .dark .border-gray-200.rounded-lg {
+            @apply border-gray-700;
+        }
+        /* Формы */
+        .dark input, .dark select, .dark textarea {
+            @apply bg-gray-700 border-gray-600 text-white;
+        }
+        .dark input::placeholder {
+            @apply text-gray-400;
         }
         @keyframes modalIn {
             0% { transform: translateY(20px) scale(0.95); opacity: 0; }
@@ -91,15 +157,18 @@
     <div id="particles" class="particles"></div>
     
     <!-- Navigation -->
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
+    <nav class="bg-white backdrop-blur-sm shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
-                        <i class="fas fa-cube text-indigo-500 text-2xl mr-2"></i>
-                        <span class="text-xl font-bold text-gray-900">Flowcross</span>
+                        <img id="logo" src="https://i.pinimg.com/736x/29/bd/96/29bd9660dd4a07617461de609b550e4c.jpg" alt="Flowcross Logo" class="h-26 w-16 rounded-full mr-3">
+                        <span class="text-xl font-bold text-gray-900 dark:text-black flex items-center">
+                            <span class="mr-1">Flowcross-LLC /</span>
+                            <span class="text-indigo-600 dark:text-indigo-400">Flowcross</span>
+                        </span>
                     </div>
-                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                    <div class="hidden sm:ml-9 sm:flex sm:space-x-8">
                         <a href="#features" class="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             <i class="fas fa-magic mr-1"></i> Возможности
                         </a>
@@ -122,11 +191,13 @@
                         <input id="search-input" type="text" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Поиск...">
                     </div>
                     <button id="theme-toggle" class="mr-4 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                        <i class="fas fa-moon dark:hidden"></i>
-                        <i class="fas fa-sun hidden dark:block"></i>
+                        <i class="fas fa-moon dark:hidden" aria-hidden="true"></i>
+                        <i class="fas fa-sun hidden dark:block" aria-hidden="true"></i>
+                        <span class="sr-only">Переключить тему</span>
                     </button>
-                    <button id="login-btn" class="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Войти
+                    <button id="settings-btn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-cog" aria-hidden="true"></i>
+                        <span class="sr-only">Настройки</span>
                     </button>
                 </div>
                 <div class="-mr-2 flex items-center sm:hidden">
@@ -164,11 +235,10 @@
             </div>
         </div>
     </nav>
-    
     <!-- Hero Section -->
     <div class="relative overflow-hidden">
         <div class="max-w-7xl mx-auto">
-            <div class="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
+            <div class="relative z-10 pb-8 bg- sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
                 <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
                     <div class="sm:text-center lg:text-left">
                         <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
@@ -232,9 +302,9 @@
                             </span>
                         </div>
                         <div class="mt-4">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900">Защита от читов</h3>
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Защита от дебилов</h3>
                             <p class="mt-2 text-base text-gray-500">
-                                Встроенная система античита защитит вас от нечестных игроков.
+                                Встроенная система антидебил защитит вас от нечестных игроков.
                             </p>
                         </div>
                     </div>
@@ -308,7 +378,7 @@
                     Выберите подходящий вариант для комфортной игры
                 </p>
                 <div class="relative mt-6 bg-white rounded-lg p-0.5 flex self-center border border-gray-200">
-                    <button id="monthly-btn" type="button" class="relative w-1/2 bg-white border-gray-900 rounded-md shadow-sm py-2 text-sm font-medium text-gray-900 whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:z-10 sm:w-auto sm:px-8">
+                    <button id="monthly-btn" type="button" class="relative w-1/2 bg-indigo-600 text-white rounded-md shadow-sm py-2 text-sm font-medium whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:z-10 sm:w-auto sm:px-8">
                         Ежемесячно
                     </button>
                     <button id="yearly-btn" type="button" class="ml-0.5 relative w-1/2 border border-transparent rounded-md py-2 text-sm font-medium text-gray-700 whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:z-10 sm:w-auto sm:px-8">
@@ -320,12 +390,14 @@
             <div class="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0">
                 <div class="border border-gray-200 rounded-lg shadow-sm divide-y divide-gray-200">
                     <div class="p-6">
-                        <h2 class="text-lg leading-6 font-medium text-gray-900">Базовый</h2>
+                        <h2 class="text-lg leading-6 font-medium text-gray-900">Базовый🙏</h2>
                         <p class="mt-4">
                             <span class="text-4xl font-extrabold text-gray-900">⭐</span>
-                            <span class="text-4xl font-extrabold text-gray-900 price-value">500</span>
-                            <span class="text-base font-medium text-gray-500 price-period">/месяц</span>
-                            <span class="text-sm text-gray-500 price-savings hidden">(экономия 20⭐)</span>
+                            <span class="text-4xl font-extrabold text-gray-900 monthly-price">500</span>
+                            <span class="text-base font-medium text-gray-500 monthly-price">/месяц</span>
+                            <span class="text-4xl font-extrabold text-gray-900 yearly-price hidden">5000</span>
+                            <span class="text-base font-medium text-gray-500 yearly-price hidden">/год</span>
+                            <span class="text-sm text-gray-500 yearly-price hidden">(экономия 20⭐)</span>
                         </p>
                         <p class="mt-4 text-sm text-gray-500">
                             Для начинающих игроков
@@ -363,7 +435,7 @@
                         <p class="mt-4">
                             <span class="text-4xl font-extrabold text-gray-900">⭐</span>
                             <span class="text-4xl font-extrabold text-gray-900 price-value">1500</span>
-                            <span class="text-base font-medium text-gray-500 price-period">/месяц</span>
+                            <span class="text-base font-medium text-gray-500 price-period">/year</span>
                             <span class="text-sm text-gray-500 price-savings hidden">(экономия 100⭐)</span>
                         </p>
                         <p class="mt-4 text-sm text-gray-500">
@@ -406,7 +478,7 @@
                         <p class="mt-4">
                             <span class="text-4xl font-extrabold text-gray-900">⭐</span>
                             <span class="text-4xl font-extrabold text-gray-900 price-value">4500</span>
-                            <span class="text-base font-medium text-gray-500 price-period">/месяц</span>
+                            <span class="text-base font-medium text-gray-500 price-period">/year</span>
                             <span class="text-sm text-gray-500 price-savings hidden">(экономия 200⭐)</span>
                         </p>
                         <p class="mt-4 text-sm text-gray-500">
@@ -484,10 +556,10 @@
                         <div class="mt-5">
                             <h3 class="text-lg leading-6 font-medium text-gray-900">macOS</h3>
                             <p class="mt-2 text-base text-gray-500">
-                                macOS  и выше
+                                macOS и выше
                             </p>
                             <button disabled class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-400 cursor-not-allowed">
-                                Скачать для Mac
+                                Скоро будет доступно
                             </button>
                             <p class="mt-2 text-sm text-gray-500">Скоро будет доступно</p>
                         </div>
@@ -503,7 +575,7 @@
                                 Ubuntu, Debian, Fedora и другие
                             </p>
                             <button disabled class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-400 cursor-not-allowed">
-                                Скачать для Linux
+                                Скоро будет доступно
                             </button>
                             <p class="mt-2 text-sm text-gray-500">Скоро будет доступно</p>
                         </div>
@@ -654,21 +726,21 @@
                 </div>
                 <div class="px-5 py-2">
                     <a href="#" class="text-base text-gray-500 hover:text-gray-900">
-                        Блог
+                        
                     </a>
                 </div>
                 <div class="px-5 py-2">
                     <a href="#" class="text-base text-gray-500 hover:text-gray-900">
-                        Вакансии
+                        Для разработчиков
                     </a>
                 </div>
                 <div class="px-5 py-2">
-                    <a href="#" class="text-base text-gray-500 hover:text-gray-900">
+                    <a href="https://telegra.ph/USLOVIYA-ISPOLZOVANIYA-FLOWCROSS-CLIENT-07-01" target="_blank" class="text-base text-gray-500 hover:text-gray-900">
                         Политика конфиденциальности
                     </a>
                 </div>
                 <div class="px-5 py-2">
-                    <a href="#" class="text-base text-gray-500 hover:text-gray-900">
+                    <a href="https://telegra.ph/LICENZIONNOE-SOGLASHENIE-S-KONECHNYM-POLZOVATELEM-EULA-07-02" target="_blank" class="text-base text-gray-500 hover:text-gray-900">
                         Условия использования
                     </a>
                 </div>
@@ -692,7 +764,7 @@
                 </a>
             </div>
             <p class="mt-8 text-center text-base text-gray-400">
-                &copy; 2025 Flowcross. Все права защищены.
+                © 2025 Flowcross. Все права защищены.
             </p>
         </div>
     </footer>
@@ -703,7 +775,7 @@
             <div class="fixed inset-0 transition-opacity" aria-hidden="true">
                 <div class="absolute inset-0 bg-gray-900/70 backdrop-blur-sm transition-opacity duration-300"></div>
             </div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true"></span>
             <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
                 <div class="flex">
                     <!-- Info Section -->
@@ -734,57 +806,59 @@
                     </div>
                     <!-- Form Section -->
                     <div class="w-full md:w-2/3">
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-indigo-100 sm:mx-0 sm:h-10 sm:w-10">
-                            <i class="fas fa-user text-indigo-600"></i>
-                        </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                                Вход в аккаунт Flowcross
-                            </h3>
-                            <div class="mt-2">
-                                <form class="space-y-6">
-                                    <div>
-                                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                                        <div class="mt-1">
-                                            <input id="email" name="email" type="email" autocomplete="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                        </div>
+                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                            <div class="sm:flex sm:items-start">
+                                <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-indigo-100 sm:mx-0 sm:h-10 sm:w-10">
+                                    <i class="fas fa-user text-indigo-600"></i>
+                                </div>
+                                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                    <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                                        Вход в аккаунт Flowcross
+                                    </h3>
+                                    <div class="mt-2">
+                                        <form class="space-y-6">
+                                            <div>
+                                                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                                                <div class="mt-1">
+                                                    <input id="email" name="email" type="email" autocomplete="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                </div>
+                                            </div>
+                                            
+                                            <div>
+                                                <label for="password" class="block text-sm font-medium text-gray-700">Пароль</label>
+                                                <div class="mt-1">
+                                                    <input id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                                    <label for="remember-me" class="ml-2 block text-sm text-gray-900">
+                                                        Запомнить меня
+                                                    </label>
+                                                </div>
+                                                
+                                                <div class="text-sm">
+                                                    <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
+                                                        Забыли пароль?
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
-                                    
-                                    <div>
-                                        <label for="password" class="block text-sm font-medium text-gray-700">Пароль</label>
-                                        <div class="mt-1">
-                                            <input id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center">
-                                            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                                            <label for="remember-me" class="ml-2 block text-sm text-gray-900">
-                                                Запомнить меня
-                                            </label>
-                                        </div>
-                                        
-                                        <div class="text-sm">
-                                            <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
-                                                Забыли пароль?
-                                            </a>
-                                        </div>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
+                        <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                            <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                Войти
+                            </button>
+                            <button id="close-modal" type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                Отмена
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        Войти
-                    </button>
-                    <button id="close-modal" type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                        Отмена
-                    </button>
                 </div>
             </div>
         </div>
@@ -793,17 +867,41 @@
     <script>
         // Theme management
         const themeToggle = document.getElementById('theme-toggle');
+        const logo = document.getElementById('logo');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         
-        // Set initial theme
-        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && prefersDark)) {
-            document.documentElement.classList.add('dark');
+        // Set initial theme and logo
+        function setInitialTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+                logo.src = 'https://i.pinimg.com/1200x/b1/aa/c5/b1aac53ac0c05445259d401667d8b49c.jpg';
+            } else {
+                document.documentElement.classList.remove('dark');
+                logo.src = 'https://i.pinimg.com/736x/29/bd/96/29bd9660dd4a07617461de609b550e4c.jpg';
+            }
         }
 
         // Theme toggle handler
         themeToggle.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            logo.src = isDark ? 'https://i.pinimg.com/1200x/b1/aa/c5/b1aac53ac0c05445259d401667d8b49c.jpg' : 'https://i.pinimg.com/736x/29/bd/96/29bd9660dd4a07617461de609b550e4c.jpg';
+            
+            document.dispatchEvent(new CustomEvent('themeChanged', {
+                detail: { theme: isDark ? 'dark' : 'light' }
+            }));
+        });
+
+        // Initialize theme
+        setInitialTheme();
+
+        // Watch for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) {
+                document.documentElement.classList.toggle('dark', e.matches);
+                logo.src = e.matches ? 'https://i.pinimg.com/1200x/b1/aa/c5/b1aac53ac0c05445259d401667d8b49c.jpg' : 'https://i.pinimg.com/736x/29/bd/96/29bd9660dd4a07617461de609b550e4c.jpg';
+            }
         });
 
         // Particles animation
@@ -838,6 +936,24 @@
                 mobileMenu.classList.toggle('hidden');
             });
             
+            // Settings panel functionality
+            const settingsBtn = document.getElementById('settings-btn');
+            const settingsPanel = document.getElementById('settings-panel');
+            const closeSettings = document.getElementById('close-settings');
+
+            settingsBtn.addEventListener('click', function() {
+                settingsPanel.classList.remove('hidden', 'translate-x-full');
+                document.body.classList.add('overflow-hidden');
+            });
+
+            closeSettings.addEventListener('click', function() {
+                settingsPanel.classList.add('translate-x-full');
+                setTimeout(() => {
+                    settingsPanel.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
+                }, 300);
+            });
+
             // Login modal functionality
             const loginBtn = document.getElementById('login-btn');
             const loginModal = document.getElementById('login-modal');
@@ -864,11 +980,18 @@
             
             loginBtn.addEventListener('click', openModal);
             closeModal.addEventListener('click', closeModalFunc);
-            
+
+
             // Close modal when clicking outside
             loginModal.addEventListener('click', (e) => {
                 if (e.target === loginModal) {
                     closeModalFunc();
+                }
+            });
+
+            settingsPanel.addEventListener('click', (e) => {
+                if (e.target === settingsPanel) {
+                    closeSettings.click();
                 }
             });
             
@@ -911,55 +1034,21 @@
             const monthlyBtn = document.getElementById('monthly-btn');
             const yearlyBtn = document.getElementById('yearly-btn');
             
-            function animateValue(element, start, end, duration) {
-                const range = end - start;
-                const startTime = Date.now();
-                const endTime = startTime + duration;
-                
-                function update() {
-                    const now = Date.now();
-                    const remaining = Math.max(0, endTime - now);
-                    const progress = 1 - (remaining / duration);
-                    const current = start + (progress * range);
-                    
-                    element.textContent = "$" + current.toFixed(2);
-                    
-                    if (remaining > 0) {
-                        requestAnimationFrame(update);
-                    } else {
-                        element.textContent = "$" + end.toFixed(2);
-                    }
-                }
-                
-                requestAnimationFrame(update);
-            }
-
-            function updatePricingDisplay(isYearly) {
-                // Update button styles
-                if (isYearly) {
-                    yearlyBtn.classList.add('bg-indigo-600', 'text-white');
-                    yearlyBtn.classList.remove('text-gray-700');
-                    monthlyBtn.classList.remove('bg-indigo-600', 'text-white');
-                    monthlyBtn.classList.add('text-gray-700');
-                    
-                    // Animate prices
-                    document.querySelectorAll('.price-container').forEach(container => {
-                        const monthlyPrice = parseFloat(container.querySelector('.monthly-price').textContent.replace('            
             // Pricing plans data
             const plans = {
                 basic: {
-                    monthly: 100,
-                    yearly: 1000,
+                    monthly: 500,
+                    yearly: 5000,
                     savings: 20
                 },
                 plus: {
-                    monthly: 500,
-                    yearly: 5000,
+                    monthly: 1500,
+                    yearly: 15000,
                     savings: 100
                 },
                 v3: {
-                    monthly: 1000,
-                    yearly: 10000,
+                    monthly: 4500,
+                    yearly: 45000,
                     savings: 200
                 }
             };
@@ -971,33 +1060,20 @@
                     yearlyBtn.classList.remove('text-gray-700');
                     monthlyBtn.classList.remove('bg-indigo-600', 'text-white');
                     monthlyBtn.classList.add('text-gray-700');
+                    
+                    // Show yearly pricing
+                    document.querySelectorAll('.yearly-price').forEach(el => el.classList.remove('hidden'));
+                    document.querySelectorAll('.monthly-price').forEach(el => el.classList.add('hidden'));
                 } else {
                     monthlyBtn.classList.add('bg-indigo-600', 'text-white');
                     monthlyBtn.classList.remove('text-gray-700');
                     yearlyBtn.classList.remove('bg-indigo-600', 'text-white');
                     yearlyBtn.classList.add('text-gray-700');
+                    
+                    // Show monthly pricing
+                    document.querySelectorAll('.monthly-price').forEach(el => el.classList.remove('hidden'));
+                    document.querySelectorAll('.yearly-price').forEach(el => el.classList.add('hidden'));
                 }
-
-                // Update all pricing cards
-                document.querySelectorAll('.border-gray-200.rounded-lg').forEach(card => {
-                    const planType = card.querySelector('h2').textContent.trim().toLowerCase();
-                    const planData = plans[planType === 'flow+' ? 'plus' : planType === 'flow v3' ? 'v3' : 'basic'];
-                    
-                    const priceValue = card.querySelector('.price-value');
-                    const pricePeriod = card.querySelector('.price-period');
-                    const priceSavings = card.querySelector('.price-savings');
-                    
-                    if (isYearly) {
-                        priceValue.textContent = planData.yearly.toFixed(2);
-                        pricePeriod.textContent = '/год';
-                        priceSavings.textContent = `(экономия ${planData.savings})`;
-                        priceSavings.classList.remove('hidden');
-                    } else {
-                        priceValue.textContent = planData.monthly.toFixed(2);
-                        pricePeriod.textContent = '/месяц';
-                        priceSavings.classList.add('hidden');
-                    }
-                });
             }
 
             monthlyBtn.addEventListener('click', () => updatePricingDisplay(false));
@@ -1087,1312 +1163,6 @@
             // Run on scroll and on load
             window.addEventListener('scroll', updateActiveNav);
             window.addEventListener('load', updateActiveNav);
-        });
-
-        // Theme toggle functionality
-        const themeToggle = document.getElementById('theme-toggle');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        
-        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && prefersDark)) {
-            document.documentElement.classList.add('dark');
-        }
-
-        themeToggle.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-        });
-    </script>
-</body>
-</html>, ''));
-                        const yearlyPrice = parseFloat(container.querySelector('.yearly-price').textContent.replace('            }
-            
-            monthlyBtn.addEventListener('click', () => updatePricingDisplay(false));
-            yearlyBtn.addEventListener('click', () => updatePricingDisplay(true));
-            
-            // Initialize with monthly pricing
-            updatePricingDisplay(false);
-            
-            // Search functionality
-            const searchInput = document.getElementById('search-input');
-            
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                
-                if (searchTerm.length < 3) {
-                    // Remove highlights if search term is too short
-                    document.querySelectorAll('.search-highlight').forEach(el => {
-                        const parent = el.parentNode;
-                        parent.replaceChild(document.createTextNode(el.textContent), el);
-                        parent.normalize();
-                    });
-                    return;
-                }
-                
-                // Search in all text content
-                const walker = document.createTreeWalker(
-                    document.body,
-                    NodeFilter.SHOW_TEXT,
-                    null,
-                    false
-                );
-                
-                let node;
-                const matches = [];
-                
-                while (node = walker.nextNode()) {
-                    if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') {
-                        continue;
-                    }
-                    
-                    const text = node.nodeValue;
-                    const regex = new RegExp(searchTerm, 'gi');
-                    
-                    if (text.match(regex)) {
-                        matches.push({
-                            node: node,
-                            text: text
-                        });
-                    }
-                }
-                
-                // Highlight matches
-                matches.forEach(match => {
-                    const span = document.createElement('span');
-                    span.className = 'search-highlight';
-                    span.textContent = match.text;
-                    
-                    const parent = match.node.parentNode;
-                    parent.replaceChild(span, match.node);
-                });
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                        
-                        // Close mobile menu if open
-                        if (!mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>, ''));
-                        const priceElement = container.querySelector(isYearly ? '.yearly-price' : '.monthly-price');
-                        
-                        animateValue(priceElement, monthlyPrice, yearlyPrice, 500);
-                    });
-                    
-                    // Show yearly prices
-                    document.querySelectorAll('.yearly-price').forEach(el => el.classList.remove('hidden'));
-                    document.querySelectorAll('.monthly-price').forEach(el => el.classList.add('hidden'));
-                    document.querySelectorAll('.yearly-text').forEach(el => el.classList.remove('hidden'));
-                    document.querySelectorAll('.monthly-text').forEach(el => el.classList.add('hidden'));
-                } else {
-                    monthlyBtn.classList.add('bg-indigo-600', 'text-white');
-                    monthlyBtn.classList.remove('text-gray-700');
-                    yearlyBtn.classList.remove('bg-indigo-600', 'text-white');
-                    yearlyBtn.classList.add('text-gray-700');
-                    
-                    // Animate prices
-                    document.querySelectorAll('.price-container').forEach(container => {
-                        const yearlyPrice = parseFloat(container.querySelector('.yearly-price').textContent.replace('            }
-            
-            monthlyBtn.addEventListener('click', () => updatePricingDisplay(false));
-            yearlyBtn.addEventListener('click', () => updatePricingDisplay(true));
-            
-            // Initialize with monthly pricing
-            updatePricingDisplay(false);
-            
-            // Search functionality
-            const searchInput = document.getElementById('search-input');
-            
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                
-                if (searchTerm.length < 3) {
-                    // Remove highlights if search term is too short
-                    document.querySelectorAll('.search-highlight').forEach(el => {
-                        const parent = el.parentNode;
-                        parent.replaceChild(document.createTextNode(el.textContent), el);
-                        parent.normalize();
-                    });
-                    return;
-                }
-                
-                // Search in all text content
-                const walker = document.createTreeWalker(
-                    document.body,
-                    NodeFilter.SHOW_TEXT,
-                    null,
-                    false
-                );
-                
-                let node;
-                const matches = [];
-                
-                while (node = walker.nextNode()) {
-                    if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') {
-                        continue;
-                    }
-                    
-                    const text = node.nodeValue;
-                    const regex = new RegExp(searchTerm, 'gi');
-                    
-                    if (text.match(regex)) {
-                        matches.push({
-                            node: node,
-                            text: text
-                        });
-                    }
-                }
-                
-                // Highlight matches
-                matches.forEach(match => {
-                    const span = document.createElement('span');
-                    span.className = 'search-highlight';
-                    span.textContent = match.text;
-                    
-                    const parent = match.node.parentNode;
-                    parent.replaceChild(span, match.node);
-                });
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                        
-                        // Close mobile menu if open
-                        if (!mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>, ''));
-                        const monthlyPrice = parseFloat(container.querySelector('.monthly-price').textContent.replace('            }
-            
-            monthlyBtn.addEventListener('click', () => updatePricingDisplay(false));
-            yearlyBtn.addEventListener('click', () => updatePricingDisplay(true));
-            
-            // Initialize with monthly pricing
-            updatePricingDisplay(false);
-            
-            // Search functionality
-            const searchInput = document.getElementById('search-input');
-            
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                
-                if (searchTerm.length < 3) {
-                    // Remove highlights if search term is too short
-                    document.querySelectorAll('.search-highlight').forEach(el => {
-                        const parent = el.parentNode;
-                        parent.replaceChild(document.createTextNode(el.textContent), el);
-                        parent.normalize();
-                    });
-                    return;
-                }
-                
-                // Search in all text content
-                const walker = document.createTreeWalker(
-                    document.body,
-                    NodeFilter.SHOW_TEXT,
-                    null,
-                    false
-                );
-                
-                let node;
-                const matches = [];
-                
-                while (node = walker.nextNode()) {
-                    if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') {
-                        continue;
-                    }
-                    
-                    const text = node.nodeValue;
-                    const regex = new RegExp(searchTerm, 'gi');
-                    
-                    if (text.match(regex)) {
-                        matches.push({
-                            node: node,
-                            text: text
-                        });
-                    }
-                }
-                
-                // Highlight matches
-                matches.forEach(match => {
-                    const span = document.createElement('span');
-                    span.className = 'search-highlight';
-                    span.textContent = match.text;
-                    
-                    const parent = match.node.parentNode;
-                    parent.replaceChild(span, match.node);
-                });
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                        
-                        // Close mobile menu if open
-                        if (!mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>, ''));
-                        const priceElement = container.querySelector(isYearly ? '.yearly-price' : '.monthly-price');
-                        
-                        animateValue(priceElement, yearlyPrice, monthlyPrice, 500);
-                    });
-                    
-                    // Show monthly prices
-                    document.querySelectorAll('.monthly-price').forEach(el => el.classList.remove('hidden'));
-                    document.querySelectorAll('.yearly-price').forEach(el => el.classList.add('hidden'));
-                    document.querySelectorAll('.monthly-text').forEach(el => el.classList.remove('hidden'));
-                    document.querySelectorAll('.yearly-text').forEach(el => el.classList.add('hidden'));
-                }
-            }
-            
-            monthlyBtn.addEventListener('click', () => updatePricingDisplay(false));
-            yearlyBtn.addEventListener('click', () => updatePricingDisplay(true));
-            
-            // Initialize with monthly pricing
-            updatePricingDisplay(false);
-            
-            // Search functionality
-            const searchInput = document.getElementById('search-input');
-            
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                
-                if (searchTerm.length < 3) {
-                    // Remove highlights if search term is too short
-                    document.querySelectorAll('.search-highlight').forEach(el => {
-                        const parent = el.parentNode;
-                        parent.replaceChild(document.createTextNode(el.textContent), el);
-                        parent.normalize();
-                    });
-                    return;
-                }
-                
-                // Search in all text content
-                const walker = document.createTreeWalker(
-                    document.body,
-                    NodeFilter.SHOW_TEXT,
-                    null,
-                    false
-                );
-                
-                let node;
-                const matches = [];
-                
-                while (node = walker.nextNode()) {
-                    if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') {
-                        continue;
-                    }
-                    
-                    const text = node.nodeValue;
-                    const regex = new RegExp(searchTerm, 'gi');
-                    
-                    if (text.match(regex)) {
-                        matches.push({
-                            node: node,
-                            text: text
-                        });
-                    }
-                }
-                
-                // Highlight matches
-                matches.forEach(match => {
-                    const span = document.createElement('span');
-                    span.className = 'search-highlight';
-                    span.textContent = match.text;
-                    
-                    const parent = match.node.parentNode;
-                    parent.replaceChild(span, match.node);
-                });
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                        
-                        // Close mobile menu if open
-                        if (!mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>, ''));
-                        const yearlyPrice = parseFloat(container.querySelector('.yearly-price').textContent.replace('            
-            monthlyBtn.addEventListener('click', () => updatePricingDisplay(false));
-            yearlyBtn.addEventListener('click', () => updatePricingDisplay(true));
-            
-            // Initialize with monthly pricing
-            updatePricingDisplay(false);
-            
-            // Search functionality
-            const searchInput = document.getElementById('search-input');
-            
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                
-                if (searchTerm.length < 3) {
-                    // Remove highlights if search term is too short
-                    document.querySelectorAll('.search-highlight').forEach(el => {
-                        const parent = el.parentNode;
-                        parent.replaceChild(document.createTextNode(el.textContent), el);
-                        parent.normalize();
-                    });
-                    return;
-                }
-                
-                // Search in all text content
-                const walker = document.createTreeWalker(
-                    document.body,
-                    NodeFilter.SHOW_TEXT,
-                    null,
-                    false
-                );
-                
-                let node;
-                const matches = [];
-                
-                while (node = walker.nextNode()) {
-                    if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') {
-                        continue;
-                    }
-                    
-                    const text = node.nodeValue;
-                    const regex = new RegExp(searchTerm, 'gi');
-                    
-                    if (text.match(regex)) {
-                        matches.push({
-                            node: node,
-                            text: text
-                        });
-                    }
-                }
-                
-                // Highlight matches
-                matches.forEach(match => {
-                    const span = document.createElement('span');
-                    span.className = 'search-highlight';
-                    span.textContent = match.text;
-                    
-                    const parent = match.node.parentNode;
-                    parent.replaceChild(span, match.node);
-                });
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                        
-                        // Close mobile menu if open
-                        if (!mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>, ''));
-                        const yearlyPrice = parseFloat(container.querySelector('.yearly-price').textContent.replace('            }
-            
-            monthlyBtn.addEventListener('click', () => updatePricingDisplay(false));
-            yearlyBtn.addEventListener('click', () => updatePricingDisplay(true));
-            
-            // Initialize with monthly pricing
-            updatePricingDisplay(false);
-            
-            // Search functionality
-            const searchInput = document.getElementById('search-input');
-            
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                
-                if (searchTerm.length < 3) {
-                    // Remove highlights if search term is too short
-                    document.querySelectorAll('.search-highlight').forEach(el => {
-                        const parent = el.parentNode;
-                        parent.replaceChild(document.createTextNode(el.textContent), el);
-                        parent.normalize();
-                    });
-                    return;
-                }
-                
-                // Search in all text content
-                const walker = document.createTreeWalker(
-                    document.body,
-                    NodeFilter.SHOW_TEXT,
-                    null,
-                    false
-                );
-                
-                let node;
-                const matches = [];
-                
-                while (node = walker.nextNode()) {
-                    if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') {
-                        continue;
-                    }
-                    
-                    const text = node.nodeValue;
-                    const regex = new RegExp(searchTerm, 'gi');
-                    
-                    if (text.match(regex)) {
-                        matches.push({
-                            node: node,
-                            text: text
-                        });
-                    }
-                }
-                
-                // Highlight matches
-                matches.forEach(match => {
-                    const span = document.createElement('span');
-                    span.className = 'search-highlight';
-                    span.textContent = match.text;
-                    
-                    const parent = match.node.parentNode;
-                    parent.replaceChild(span, match.node);
-                });
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                        
-                        // Close mobile menu if open
-                        if (!mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>, ''));
-                        const priceElement = container.querySelector(isYearly ? '.yearly-price' : '.monthly-price');
-                        
-                        animateValue(priceElement, monthlyPrice, yearlyPrice, 500);
-                    });
-                    
-                    // Show yearly prices
-                    document.querySelectorAll('.yearly-price').forEach(el => el.classList.remove('hidden'));
-                    document.querySelectorAll('.monthly-price').forEach(el => el.classList.add('hidden'));
-                    document.querySelectorAll('.yearly-text').forEach(el => el.classList.remove('hidden'));
-                    document.querySelectorAll('.monthly-text').forEach(el => el.classList.add('hidden'));
-                } else {
-                    monthlyBtn.classList.add('bg-indigo-600', 'text-white');
-                    monthlyBtn.classList.remove('text-gray-700');
-                    yearlyBtn.classList.remove('bg-indigo-600', 'text-white');
-                    yearlyBtn.classList.add('text-gray-700');
-                    
-                    // Animate prices
-                    document.querySelectorAll('.price-container').forEach(container => {
-                        const yearlyPrice = parseFloat(container.querySelector('.yearly-price').textContent.replace('            }
-            
-            monthlyBtn.addEventListener('click', () => updatePricingDisplay(false));
-            yearlyBtn.addEventListener('click', () => updatePricingDisplay(true));
-            
-            // Initialize with monthly pricing
-            updatePricingDisplay(false);
-            
-            // Search functionality
-            const searchInput = document.getElementById('search-input');
-            
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                
-                if (searchTerm.length < 3) {
-                    // Remove highlights if search term is too short
-                    document.querySelectorAll('.search-highlight').forEach(el => {
-                        const parent = el.parentNode;
-                        parent.replaceChild(document.createTextNode(el.textContent), el);
-                        parent.normalize();
-                    });
-                    return;
-                }
-                
-                // Search in all text content
-                const walker = document.createTreeWalker(
-                    document.body,
-                    NodeFilter.SHOW_TEXT,
-                    null,
-                    false
-                );
-                
-                let node;
-                const matches = [];
-                
-                while (node = walker.nextNode()) {
-                    if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') {
-                        continue;
-                    }
-                    
-                    const text = node.nodeValue;
-                    const regex = new RegExp(searchTerm, 'gi');
-                    
-                    if (text.match(regex)) {
-                        matches.push({
-                            node: node,
-                            text: text
-                        });
-                    }
-                }
-                
-                // Highlight matches
-                matches.forEach(match => {
-                    const span = document.createElement('span');
-                    span.className = 'search-highlight';
-                    span.textContent = match.text;
-                    
-                    const parent = match.node.parentNode;
-                    parent.replaceChild(span, match.node);
-                });
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                        
-                        // Close mobile menu if open
-                        if (!mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>, ''));
-                        const monthlyPrice = parseFloat(container.querySelector('.monthly-price').textContent.replace('            }
-            
-            monthlyBtn.addEventListener('click', () => updatePricingDisplay(false));
-            yearlyBtn.addEventListener('click', () => updatePricingDisplay(true));
-            
-            // Initialize with monthly pricing
-            updatePricingDisplay(false);
-            
-            // Search functionality
-            const searchInput = document.getElementById('search-input');
-            
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                
-                if (searchTerm.length < 3) {
-                    // Remove highlights if search term is too short
-                    document.querySelectorAll('.search-highlight').forEach(el => {
-                        const parent = el.parentNode;
-                        parent.replaceChild(document.createTextNode(el.textContent), el);
-                        parent.normalize();
-                    });
-                    return;
-                }
-                
-                // Search in all text content
-                const walker = document.createTreeWalker(
-                    document.body,
-                    NodeFilter.SHOW_TEXT,
-                    null,
-                    false
-                );
-                
-                let node;
-                const matches = [];
-                
-                while (node = walker.nextNode()) {
-                    if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') {
-                        continue;
-                    }
-                    
-                    const text = node.nodeValue;
-                    const regex = new RegExp(searchTerm, 'gi');
-                    
-                    if (text.match(regex)) {
-                        matches.push({
-                            node: node,
-                            text: text
-                        });
-                    }
-                }
-                
-                // Highlight matches
-                matches.forEach(match => {
-                    const span = document.createElement('span');
-                    span.className = 'search-highlight';
-                    span.textContent = match.text;
-                    
-                    const parent = match.node.parentNode;
-                    parent.replaceChild(span, match.node);
-                });
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                        
-                        // Close mobile menu if open
-                        if (!mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>, ''));
-                        const priceElement = container.querySelector(isYearly ? '.yearly-price' : '.monthly-price');
-                        
-                        animateValue(priceElement, yearlyPrice, monthlyPrice, 500);
-                    });
-                    
-                    // Show monthly prices
-                    document.querySelectorAll('.monthly-price').forEach(el => el.classList.remove('hidden'));
-                    document.querySelectorAll('.yearly-price').forEach(el => el.classList.add('hidden'));
-                    document.querySelectorAll('.monthly-text').forEach(el => el.classList.remove('hidden'));
-                    document.querySelectorAll('.yearly-text').forEach(el => el.classList.add('hidden'));
-                }
-            }
-            
-            monthlyBtn.addEventListener('click', () => updatePricingDisplay(false));
-            yearlyBtn.addEventListener('click', () => updatePricingDisplay(true));
-            
-            // Initialize with monthly pricing
-            updatePricingDisplay(false);
-            
-            // Search functionality
-            const searchInput = document.getElementById('search-input');
-            
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                
-                if (searchTerm.length < 3) {
-                    // Remove highlights if search term is too short
-                    document.querySelectorAll('.search-highlight').forEach(el => {
-                        const parent = el.parentNode;
-                        parent.replaceChild(document.createTextNode(el.textContent), el);
-                        parent.normalize();
-                    });
-                    return;
-                }
-                
-                // Search in all text content
-                const walker = document.createTreeWalker(
-                    document.body,
-                    NodeFilter.SHOW_TEXT,
-                    null,
-                    false
-                );
-                
-                let node;
-                const matches = [];
-                
-                while (node = walker.nextNode()) {
-                    if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') {
-                        continue;
-                    }
-                    
-                    const text = node.nodeValue;
-                    const regex = new RegExp(searchTerm, 'gi');
-                    
-                    if (text.match(regex)) {
-                        matches.push({
-                            node: node,
-                            text: text
-                        });
-                    }
-                }
-                
-                // Highlight matches
-                matches.forEach(match => {
-                    const span = document.createElement('span');
-                    span.className = 'search-highlight';
-                    span.textContent = match.text;
-                    
-                    const parent = match.node.parentNode;
-                    parent.replaceChild(span, match.node);
-                });
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                        
-                        // Close mobile menu if open
-                        if (!mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>, ''));
-                        const priceElement = container.querySelector(isYearly ? '.yearly-price' : '.monthly-price');
-                        
-                        animateValue(priceElement, monthlyPrice, yearlyPrice, 500);
-                    });
-            
-            monthlyBtn.addEventListener('click', () => updatePricingDisplay(false));
-            yearlyBtn.addEventListener('click', () => updatePricingDisplay(true));
-            
-            // Initialize with monthly pricing
-            updatePricingDisplay(false);
-            
-            // Search functionality
-            const searchInput = document.getElementById('search-input');
-            
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                
-                if (searchTerm.length < 3) {
-                    // Remove highlights if search term is too short
-                    document.querySelectorAll('.search-highlight').forEach(el => {
-                        const parent = el.parentNode;
-                        parent.replaceChild(document.createTextNode(el.textContent), el);
-                        parent.normalize();
-                    });
-                    return;
-                }
-                
-                // Search in all text content
-                const walker = document.createTreeWalker(
-                    document.body,
-                    NodeFilter.SHOW_TEXT,
-                    null,
-                    false
-                );
-                
-                let node;
-                const matches = [];
-                
-                while (node = walker.nextNode()) {
-                    if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') {
-                        continue;
-                    }
-                    
-                    const text = node.nodeValue;
-                    const regex = new RegExp(searchTerm, 'gi');
-                    
-                    if (text.match(regex)) {
-                        matches.push({
-                            node: node,
-                            text: text
-                        });
-                    }
-                }
-                
-                // Highlight matches
-                matches.forEach(match => {
-                    const span = document.createElement('span');
-                    span.className = 'search-highlight';
-                    span.textContent = match.text;
-                    
-                    const parent = match.node.parentNode;
-                    parent.replaceChild(span, match.node);
-                });
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                        
-                        // Close mobile menu if open
-                        if (!mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>, ''));
-                        const yearlyPrice = parseFloat(container.querySelector('.yearly-price').textContent.replace('            }
-            
-            monthlyBtn.addEventListener('click', () => updatePricingDisplay(false));
-            yearlyBtn.addEventListener('click', () => updatePricingDisplay(true));
-            
-            // Initialize with monthly pricing
-            updatePricingDisplay(false);
-            
-            // Search functionality
-            const searchInput = document.getElementById('search-input');
-            
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                
-                if (searchTerm.length < 3) {
-                    // Remove highlights if search term is too short
-                    document.querySelectorAll('.search-highlight').forEach(el => {
-                        const parent = el.parentNode;
-                        parent.replaceChild(document.createTextNode(el.textContent), el);
-                        parent.normalize();
-                    });
-                    return;
-                }
-                
-                // Search in all text content
-                const walker = document.createTreeWalker(
-                    document.body,
-                    NodeFilter.SHOW_TEXT,
-                    null,
-                    false
-                );
-                
-                let node;
-                const matches = [];
-                
-                while (node = walker.nextNode()) {
-                    if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') {
-                        continue;
-                    }
-                    
-                    const text = node.nodeValue;
-                    const regex = new RegExp(searchTerm, 'gi');
-                    
-                    if (text.match(regex)) {
-                        matches.push({
-                            node: node,
-                            text: text
-                        });
-                    }
-                }
-                
-                // Highlight matches
-                matches.forEach(match => {
-                    const span = document.createElement('span');
-                    span.className = 'search-highlight';
-                    span.textContent = match.text;
-                    
-                    const parent = match.node.parentNode;
-                    parent.replaceChild(span, match.node);
-                });
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                        
-                        // Close mobile menu if open
-                        if (!mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>, ''));
-                        const priceElement = container.querySelector(isYearly ? '.yearly-price' : '.monthly-price');
-                        
-                        animateValue(priceElement, monthlyPrice, yearlyPrice, 500);
-                    });
-                    
-                    // Show yearly prices
-                    document.querySelectorAll('.yearly-price').forEach(el => el.classList.remove('hidden'));
-                    document.querySelectorAll('.monthly-price').forEach(el => el.classList.add('hidden'));
-                    document.querySelectorAll('.yearly-text').forEach(el => el.classList.remove('hidden'));
-                    document.querySelectorAll('.monthly-text').forEach(el => el.classList.add('hidden'));
-                } else {
-                    monthlyBtn.classList.add('bg-indigo-600', 'text-white');
-                    monthlyBtn.classList.remove('text-gray-700');
-                    yearlyBtn.classList.remove('bg-indigo-600', 'text-white');
-                    yearlyBtn.classList.add('text-gray-700');
-                    
-                    // Animate prices
-                    document.querySelectorAll('.price-container').forEach(container => {
-                        const yearlyPrice = parseFloat(container.querySelector('.yearly-price').textContent.replace('            }
-            
-            monthlyBtn.addEventListener('click', () => updatePricingDisplay(false));
-            yearlyBtn.addEventListener('click', () => updatePricingDisplay(true));
-            
-            // Initialize with monthly pricing
-            updatePricingDisplay(false);
-            
-            // Search functionality
-            const searchInput = document.getElementById('search-input');
-            
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                
-                if (searchTerm.length < 3) {
-                    // Remove highlights if search term is too short
-                    document.querySelectorAll('.search-highlight').forEach(el => {
-                        const parent = el.parentNode;
-                        parent.replaceChild(document.createTextNode(el.textContent), el);
-                        parent.normalize();
-                    });
-                    return;
-                }
-                
-                // Search in all text content
-                const walker = document.createTreeWalker(
-                    document.body,
-                    NodeFilter.SHOW_TEXT,
-                    null,
-                    false
-                );
-                
-                let node;
-                const matches = [];
-                
-                while (node = walker.nextNode()) {
-                    if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') {
-                        continue;
-                    }
-                    
-                    const text = node.nodeValue;
-                    const regex = new RegExp(searchTerm, 'gi');
-                    
-                    if (text.match(regex)) {
-                        matches.push({
-                            node: node,
-                            text: text
-                        });
-                    }
-                }
-                
-                // Highlight matches
-                matches.forEach(match => {
-                    const span = document.createElement('span');
-                    span.className = 'search-highlight';
-                    span.textContent = match.text;
-                    
-                    const parent = match.node.parentNode;
-                    parent.replaceChild(span, match.node);
-                });
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                        
-                        // Close mobile menu if open
-                        if (!mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>, ''));
-                        const monthlyPrice = parseFloat(container.querySelector('.monthly-price').textContent.replace('            }
-            
-            monthlyBtn.addEventListener('click', () => updatePricingDisplay(false));
-            yearlyBtn.addEventListener('click', () => updatePricingDisplay(true));
-            
-            // Initialize with monthly pricing
-            updatePricingDisplay(false);
-            
-            // Search functionality
-            const searchInput = document.getElementById('search-input');
-            
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                
-                if (searchTerm.length < 3) {
-                    // Remove highlights if search term is too short
-                    document.querySelectorAll('.search-highlight').forEach(el => {
-                        const parent = el.parentNode;
-                        parent.replaceChild(document.createTextNode(el.textContent), el);
-                        parent.normalize();
-                    });
-                    return;
-                }
-                
-                // Search in all text content
-                const walker = document.createTreeWalker(
-                    document.body,
-                    NodeFilter.SHOW_TEXT,
-                    null,
-                    false
-                );
-                
-                let node;
-                const matches = [];
-                
-                while (node = walker.nextNode()) {
-                    if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') {
-                        continue;
-                    }
-                    
-                    const text = node.nodeValue;
-                    const regex = new RegExp(searchTerm, 'gi');
-                    
-                    if (text.match(regex)) {
-                        matches.push({
-                            node: node,
-                            text: text
-                        });
-                    }
-                }
-                
-                // Highlight matches
-                matches.forEach(match => {
-                    const span = document.createElement('span');
-                    span.className = 'search-highlight';
-                    span.textContent = match.text;
-                    
-                    const parent = match.node.parentNode;
-                    parent.replaceChild(span, match.node);
-                });
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                        
-                        // Close mobile menu if open
-                        if (!mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>, ''));
-                        const priceElement = container.querySelector(isYearly ? '.yearly-price' : '.monthly-price');
-                        
-                        animateValue(priceElement, yearlyPrice, monthlyPrice, 500);
-                    });
-                    
-                    // Show monthly prices
-                    document.querySelectorAll('.monthly-price').forEach(el => el.classList.remove('hidden'));
-                    document.querySelectorAll('.yearly-price').forEach(el => el.classList.add('hidden'));
-                    document.querySelectorAll('.monthly-text').forEach(el => el.classList.remove('hidden'));
-                    document.querySelectorAll('.yearly-text').forEach(el => el.classList.add('hidden'));
-                }
-            }
-            
-            monthlyBtn.addEventListener('click', () => updatePricingDisplay(false));
-            yearlyBtn.addEventListener('click', () => updatePricingDisplay(true));
-            
-            // Initialize with monthly pricing
-            updatePricingDisplay(false);
-            
-            // Search functionality
-            const searchInput = document.getElementById('search-input');
-            
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                
-                if (searchTerm.length < 3) {
-                    // Remove highlights if search term is too short
-                    document.querySelectorAll('.search-highlight').forEach(el => {
-                        const parent = el.parentNode;
-                        parent.replaceChild(document.createTextNode(el.textContent), el);
-                        parent.normalize();
-                    });
-                    return;
-                }
-                
-                // Search in all text content
-                const walker = document.createTreeWalker(
-                    document.body,
-                    NodeFilter.SHOW_TEXT,
-                    null,
-                    false
-                );
-                
-                let node;
-                const matches = [];
-                
-                while (node = walker.nextNode()) {
-                    if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') {
-                        continue;
-                    }
-                    
-                    const text = node.nodeValue;
-                    const regex = new RegExp(searchTerm, 'gi');
-                    
-                    if (text.match(regex)) {
-                        matches.push({
-                            node: node,
-                            text: text
-                        });
-                    }
-                }
-                
-                // Highlight matches
-                matches.forEach(match => {
-                    const span = document.createElement('span');
-                    span.className = 'search-highlight';
-                    span.textContent = match.text;
-                    
-                    const parent = match.node.parentNode;
-                    parent.replaceChild(span, match.node);
-                });
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                        
-                        // Close mobile menu if open
-                        if (!mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
-                    }
-                });
-            });
         });
     </script>
 </body>
