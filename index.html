@@ -32,6 +32,58 @@
             background-clip: text;
             color: transparent;
         }
+
+        @keyframes flowText {
+            0% {
+                opacity: 0;
+                text-shadow: 0 0 10px rgba(121, 40, 202, 0.5),
+                             0 0 20px rgba(255, 0, 128, 0.3);
+                transform: translateY(20px);
+            }
+            50% {
+                opacity: 1;
+                text-shadow: 0 0 20px rgba(121, 40, 202, 0.8),
+                             0 0 40px rgba(255, 0, 128, 0.5);
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0.8;
+                text-shadow: 0 0 10px rgba(121, 40, 202, 0.5),
+                             0 0 20px rgba(255, 0, 128, 0.3);
+                transform: translateY(-10px);
+            }
+        }
+
+        .flow-animate {
+            animation: flowText 10s ease-in-out infinite;
+            position: relative;
+        }
+
+        .flow-animate::before,
+        .flow-animate::after {
+            content: "FlowCross";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0.1;
+            background: linear-gradient(90deg, #7928CA, #FF0080);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            z-index: -1;
+        }
+
+        .flow-animate::before {
+            filter: blur(2px);
+            transform: translateY(5px);
+        }
+
+        .flow-animate::after {
+            filter: blur(1px);
+            transform: translateY(-5px);
+        }
         
         .gradient-border {
             position: relative;
@@ -74,12 +126,42 @@
             50% { opacity: 0.3; }
         }
 
+        @keyframes wave {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 80px 80px;
+            }
+        }
+
         .triangle-bg:hover {
             opacity: 0.8 !important;
             filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
             transition: all 0.3s ease;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-5px); }
+            40% { transform: translateX(5px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        
+        .animate-shake {
+            animation: shake 0.5s ease-in-out;
+        }
+        
         .settings-modal {
             backdrop-filter: blur(10px);
             background-color: rgba(0, 0, 0, 0.7);
@@ -111,6 +193,26 @@
             transition: all 0.3s ease;
             pointer-events: none;
         }
+
+        /* Login form styles */
+        #loginForm input:focus, #registerForm input:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+        }
+
+        #togglePassword {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        #togglePassword:hover {
+            color: #a78bfa;
+        }
+
+        #rememberMe:checked {
+            background-color: #8b5cf6;
+            border-color: #8b5cf6;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -120,7 +222,7 @@
             <img src="https://cdn.pixabay.com/photo/2025/07/19/17/57/17-57-53-384_960_720.png" alt="FlowCross Logo" class="h-10 w-10">
             <span class="text-xl font-semibold">FlowCross LLC /</span>
             <span class="text-xl gradient-text font-semibold">Flowcross</span>
-            <span class="ml-0.5 px-3 py-1 rounded-full gradient-border text-sm bg-purple-900/20 text-purple-300 backdrop-blur-md">V3</span>
+            <span class="ml-0.1 px-3 py-1 rounded-full gradient-border text-sm bg-purple-900/20 text-purple-300 backdrop-blur-md">V3</span>
         </div>
         
         <div class="hidden md:flex items-center space-x-4">
@@ -132,7 +234,7 @@
         <div class="flex items-center space-x-4">
             <div class="relative hidden md:block">
                 <input type="text" placeholder="Search" 
-                       class="bg-gray-900 rounded-full py-2 px-4 pl-10 text-sm w-32 focus:outline-none focus:ring-2 focus:ring-purple-500/50">
+                       class="bg-gray-900/20 backdrop-blur-md rounded-full py-2 px-4 pl-10 text-sm w-32 focus:outline-none focus:ring-2 focus:ring-purple-500/50">
                 <i class="fas fa-search absolute left-3 top-2.5 text-gray-500 text-sm"></i>
             </div>
             <a href="https://github.com/flowcross-LLC/flowcross" target="_blank" class="hidden md:block px-3 py-2 text-gray-400 hover:text-white transition">
@@ -141,8 +243,11 @@
             <button class="hidden md:block px-3 py-2 text-gray-400 hover:text-white transition">
                 <i class="fas fa-cog text-lg"></i>
             </button>
-            <button class="hidden md:block px-4 py-2 text-sm rounded-md bg-white text-gray-900 hover:bg-gray-200 transition font-medium">
-                Log In
+            <button id="openLoginModal" class="hidden md:block px-4 py-2 text-sm rounded-md bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-500 hover:to-pink-500 transition-all duration-300 font-medium flex items-center group">
+                <span>Sign In</span>
+                <svg class="w-4 h-4 ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
             </button>
             <button class="md:hidden text-gray-300">
                 <i class="fas fa-bars"></i>
@@ -155,13 +260,13 @@
         <!-- Triangle background pattern -->
         <div class="absolute inset-0 opacity-10 pointer-events-none overflow-hidden">
             <div class="triangle-bg absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNMCwwIEwxMDAsMCBMNTAsMTAwIFoiIGZpbGw9IiM3OTI4Y2EiLz48L3N2Zz4=')] repeat opacity-50"
-                 style="background-size: 80px 80px; animation: pulseTriangles 8s infinite ease-in-out;"></div>
+                 style="background-size: 80px 80px; animation: pulseTriangles 8s infinite ease-in-out, wave 20s linear infinite;"></div>
             <div class="triangle-bg absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNMCwwIEwxMDAsMCBMNTAsMTAwIFoiIGZpbGw9IiNmZmZmZmYiLz48L3N2Zz4=')] repeat opacity-20"
-                 style="background-size: 80px 80px; animation: pulseTrianglesWhite 6s infinite ease-in-out 2s;"></div>
+                 style="background-size: 80px 80px; animation: pulseTrianglesWhite 6s infinite ease-in-out 2s, wave 25s linear infinite reverse;"></div>
         </div>
         <div class="max-w-4xl text-center">
             <h1 class="text-1xl md:text-6xl font-bold mb-2">
-                <span class="gradient-text">FlowCross</span> Launcher
+                <span class="gradient-text flow-animate">FlowCross</span> Launcher
             </h1>
             <p class="text-xl md:text-2xl text-gray-400 mb-12">
                 The minimal, powerful Minecraft launcher for modern gaming. 
@@ -180,44 +285,90 @@
     </main>
     
     <!-- Features Section -->
-    <section class="py-12 md:py-24 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-black to-gray-900/50">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center">
-                Why <span class="gradient-text">FlowCross?</span>
-            </h2>
+    <section class="py-12 md:py-24 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-black to-gray-900/50 relative overflow-hidden">
+        <!-- Animated background elements -->
+        <div class="absolute inset-0 opacity-10 pointer-events-none">
+            <div class="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNMCwwIEwxMDAsMCBMNTAsMTAwIFoiIGZpbGw9IiM3OTI4Y2EiLz48L3N2Zz4=')] repeat"
+                 style="background-size: 80px 80px; animation: wave 15s linear infinite;"></div>
+        </div>
+        
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-1 rounded-full gradient-border text-sm bg-purple-900/20 text-purple-300 backdrop-blur-md mb-4">WHY CHOOSE US</span>
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">
+                    Why <span class="gradient-text">FlowCross?</span>
+                </h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    Experience gaming like never before with our cutting-edge launcher technology
+                </p>
+            </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="p-6 rounded-xl bg-gray-900/50 hover:bg-gray-900 transition hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-500/10 duration-300">
-                    <div class="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center mb-4">
-                        <i class="fas fa-bolt text-purple-500 text-xl"></i>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Feature 1 -->
+                <div class="p-8 rounded-xl gradient-border hover:shadow-lg hover:shadow-purple-900/30 transition-all duration-300 group hover:-translate-y-2">
+                    <div class="w-14 h-14 rounded-xl bg-gray-900 flex items-center justify-center mb-6 gradient-border">
+                        <i class="fas fa-bolt text-2xl gradient-text"></i>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">Lightning Fast</h3>
-                    <p class="text-gray-400">
-                        Optimized startup times and minimal resource usage. 
-                        Get into your game faster than ever.
+                    <h3 class="text-xl font-semibold mb-3">Lightning Fast</h3>
+                    <p class="text-gray-400 mb-4">
+                        Optimized startup times and minimal resource usage. Get into your game faster than ever.
                     </p>
+                    <div class="flex items-center text-purple-400 text-sm group-hover:text-purple-300 transition-colors">
+                        <span>Learn more</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </div>
                 </div>
                 
-                <div class="p-6 rounded-xl bg-gray-900/50 hover:bg-gray-900 transition hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-500/10 duration-300">
-                    <div class="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center mb-4">
-                        <i class="fas fa-sliders-h text-pink-500 text-xl"></i>
+                <!-- Feature 2 -->
+                <div class="p-8 rounded-xl gradient-border hover:shadow-lg hover:shadow-pink-900/30 transition-all duration-300 group hover:-translate-y-2">
+                    <div class="w-14 h-14 rounded-xl bg-gray-900 flex items-center justify-center mb-6 gradient-border">
+                        <i class="fas fa-sliders-h text-2xl gradient-text"></i>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">Customizable</h3>
-                    <p class="text-gray-400">
-                        Tailor your experience with themes, mods, and settings. 
-                        Make it truly yours.
+                    <h3 class="text-xl font-semibold mb-3">Fully Customizable</h3>
+                    <p class="text-gray-400 mb-4">
+                        Tailor your experience with themes, mods, and settings. Make it truly yours.
                     </p>
+                    <div class="flex items-center text-pink-400 text-sm group-hover:text-pink-300 transition-colors">
+                        <span>Learn more</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </div>
                 </div>
                 
-                <div class="p-6 rounded-xl bg-gray-900/50 hover:bg-gray-900 transition">
-                    <div class="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center mb-4">
-                        <i class="fas fa-shield-alt text-blue-500 text-xl"></i>
+                <!-- Feature 3 -->
+                <div class="p-8 rounded-xl gradient-border hover:shadow-lg hover:shadow-blue-900/30 transition-all duration-300 group hover:-translate-y-2">
+                    <div class="w-14 h-14 rounded-xl bg-gray-900 flex items-center justify-center mb-6 gradient-border">
+                        <i class="fas fa-shield-alt text-2xl gradient-text"></i>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">Secure</h3>
-                    <p class="text-gray-400">
+                    <h3 class="text-xl font-semibold mb-3">Military-Grade Security</h3>
+                    <p class="text-gray-400 mb-4">
                         Built with security in mind. Your account and data are always protected.
                     </p>
+                    <div class="flex items-center text-blue-400 text-sm group-hover:text-blue-300 transition-colors">
+                        <span>Learn more</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </div>
                 </div>
+                
+                <!-- Feature 4 -->
+                <div class="p-8 rounded-xl gradient-border hover:shadow-lg hover:shadow-green-900/30 transition-all duration-300 group hover:-translate-y-2">
+                    <div class="w-14 h-14 rounded-xl bg-gray-900 flex items-center justify-center mb-6 gradient-border">
+                        <i class="fas fa-cloud-download-alt text-2xl gradient-text"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Cloud Sync</h3>
+                    <p class="text-gray-400 mb-4">
+                        Your settings and mods synced across all devices. Play anywhere, anytime.
+                    </p>
+                    <div class="flex items-center text-green-400 text-sm group-hover:text-green-300 transition-colors">
+                        <span>Learn more</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-16 text-center">
+                <button class="px-8 py-3 rounded-lg gradient-border hover:shadow-lg hover:shadow-purple-900/30 transition-all duration-300">
+                    <span class="gradient-text font-semibold text-lg">Compare All Features</span>
+                </button>
             </div>
         </div>
     </section>
@@ -323,23 +474,30 @@
                 </div>
                 
                 <!-- Flow+ Version -->
-                <div class="p-8 rounded-xl gradient-border hover:shadow-lg hover:shadow-pink-900/20 transition relative overflow-hidden">
+                <div class="p-8 rounded-xl gradient-border hover:shadow-lg hover:shadow-pink-900/30 transition-all duration-300 relative overflow-hidden group hover:-translate-y-2">
                     <div class="absolute inset-0 opacity-10 pointer-events-none">
                         <div class="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNMCwwIEwxMDAsMCBMNTAsMTAwIFoiIGZpbGw9IiNmZmZmZmYiLz48L3N2Zz4=')] repeat opacity-30"
-                             style="background-size: 60px 60px;"></div>
+                             style="background-size: 60px 60px; animation: wave 15s linear infinite;"></div>
                     </div>
-                    <div class="mb-6">
+                    <div class="absolute inset-0 bg-gradient-to-br from-purple-900/10 to-pink-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="mb-6 relative z-10">
                         <div class="flex justify-between items-start">
                             <div>
-                                <h3 class="text-2xl font-semibold mb-2">Flow+</h3>
+                                <h3 class="text-2xl font-semibold mb-2 flex items-center">
+                                    <span>Flow+</span>
+                                    <span class="ml-2 text-xs px-2 py-1 rounded-full bg-pink-900/30 text-pink-300 animate-pulse">BEST</span>
+                                </h3>
                                 <p class="text-gray-300">Enhanced experience for regular players</p>
                             </div>
-                            <span class="px-3 py-1 rounded-full text-xs bg-pink-900/30 text-pink-400">Popular</span>
+                            <span class="px-3 py-1 rounded-full text-xs bg-gradient-to-r from-purple-900/30 to-pink-900/30 text-purple-300 backdrop-blur-sm border border-purple-500/20">Popular</span>
                         </div>
                     </div>
-                    <div class="mb-6">
-                        <span class="text-4xl font-bold">$4.99</span>
-                        <span class="text-gray-300">/month</span>
+                    <div class="mb-6 relative z-10">
+                        <div class="flex items-end">
+                            <span class="text-4xl font-bold">$4.99</span>
+                            <span class="text-gray-300 ml-2 mb-1">/month</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-1">$59.88 billed annually</p>
                     </div>
                     <ul class="space-y-3 mb-8">
                         <li class="flex items-center text-gray-300">
@@ -355,15 +513,26 @@
                             <i class="fas fa-times text-red-500 mr-2"></i> Flow v4 features
                         </li>
                     </ul>
-                    <button class="w-full py-3 rounded-lg gradient-border">
-                        <span class="gradient-text font-medium">Subscribe Now</span>
+                    <button class="w-full py-3 rounded-lg gradient-border group-hover:shadow-lg group-hover:shadow-pink-900/20 transition-all duration-300 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-r from-purple-600/30 to-pink-600/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <span class="gradient-text font-medium relative z-10 flex items-center justify-center">
+                            Subscribe Now
+                            <svg class="w-4 h-4 ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </span>
                     </button>
+                    <div class="absolute -bottom-4 -right-4 w-24 h-24 rounded-full bg-pink-500/10 blur-xl group-hover:scale-150 transition-transform duration-500"></div>
                 </div>
                 
                 <!-- Flow v4 Version -->
-                <div class="p-8 rounded-xl bg-gray-900/50 hover:bg-gray-900 transition">
-                    <div class="mb-6">
-                        <h3 class="text-2xl font-semibold mb-2">Flow v4</h3>
+                <div class="p-8 rounded-xl bg-gray-900/50 hover:bg-gray-900 transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-purple-900/5 to-blue-900/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="mb-6 relative z-10">
+                        <h3 class="text-2xl font-semibold mb-2 flex items-center">
+                            <span>Flow v4</span>
+                            <span class="ml-2 text-xs px-2 py-1 rounded-full bg-blue-900/30 text-blue-300">PREMIUM</span>
+                        </h3>
                         <p class="text-gray-400">Complete package for power users</p>
                     </div>
                     <div class="mb-6">
@@ -384,17 +553,30 @@
                             <i class="fas fa-check text-green-500 mr-2"></i> VIP support
                         </li>
                     </ul>
-                    <button class="w-full py-3 rounded-lg gradient-border">
-                        <span class="gradient-text font-medium">Subscribe Now</span>
+                    <button class="w-full py-3 rounded-lg gradient-border group-hover:shadow-lg group-hover:shadow-blue-900/20 transition-all duration-300 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <span class="gradient-text font-medium relative z-10 flex items-center justify-center">
+                            Get Premium
+                            <svg class="w-4 h-4 ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </span>
                     </button>
+                    <div class="absolute -bottom-4 -right-4 w-24 h-24 rounded-full bg-blue-500/10 blur-xl group-hover:scale-150 transition-transform duration-500"></div>
                 </div>
             </div>
         </div>
     </section>
     
     <!-- Download Section -->
-    <section class="py-12 md:py-24 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-gray-900/50 to-black">
-        <div class="max-w-4xl mx-auto text-center">
+    <section class="py-12 md:py-24 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-gray-900/50 to-black relative overflow-hidden">
+        <!-- Animated background elements -->
+        <div class="absolute inset-0 opacity-10 pointer-events-none">
+            <div class="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNMCwwIEwxMDAsMCBMNTAsMTAwIFoiIGZpbGw9IiM3OTI4Y2EiLz48L3N2Zz4=')] repeat"
+                 style="background-size: 80px 80px; animation: wave 15s linear infinite;"></div>
+        </div>
+        
+        <div class="max-w-4xl mx-auto text-center relative z-10">
             <h2 class="text-3xl md:text-4xl font-bold mb-6">
                 Ready to <span class="gradient-text">Play</span>?
             </h2>
@@ -402,32 +584,70 @@
                 Download FlowCross launcher and join millions of players worldwide.
             </p>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-                <a href="https://www.dropbox.com/scl/fi/958862ip926qi017v9g9l/FLC-installer.exe?rlkey=mf75j5nlm4hxc4mzr5dvic6m2&st=jljqcwr0&dl=1" class="p-6 rounded-lg bg-gray-900/50 hover:bg-gray-900 transition cursor-pointer relative hover:scale-105 duration-300">
-                    <div class="absolute top-2 right-2 px-2 py-1 rounded-full text-xs bg-blue-900/30 text-blue-400 flex items-center">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <!-- Windows Download -->
+                <a href="https://www.dropbox.com/scl/fi/958862ip926qi017v9g9l/FLC-installer.exe?rlkey=mf75j5nlm4hxc4mzr5dvic6m2&st=jljqcwr0&dl=1" 
+                   class="group p-6 rounded-xl bg-gradient-to-b from-gray-900/50 to-gray-900/80 hover:from-gray-900/70 hover:to-gray-900 transition-all duration-300 cursor-pointer relative overflow-hidden border border-gray-800 hover:border-blue-500/60 hover:shadow-lg hover:shadow-blue-900/20">
+                    <div class="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-blue-500/10 blur-xl group-hover:scale-150 transition-transform duration-500"></div>
+                    <div class="absolute top-3 right-3 px-2 py-1 rounded-full text-xs bg-blue-900/30 text-blue-300 flex items-center backdrop-blur-sm">
                         <i class="fas fa-check mr-1"></i> Popular
                     </div>
-                    <i class="fab fa-windows text-4xl mb-4 text-blue-400"></i>
-                    <h3 class="text-lg font-semibold mb-2">Windows</h3>
-                    <p class="text-gray-400 text-sm">64-bit • Installer</p>
+                    <div class="relative z-10">
+                        <i class="fab fa-windows text-5xl mb-4 text-blue-400 group-hover:text-blue-300 transition-colors"></i>
+                        <h3 class="text-xl font-semibold mb-2">Windows</h3>
+                        <p class="text-gray-400 text-sm mb-3">64-bit • Installer</p>
+                        <div class="text-xs text-gray-500 flex items-center justify-center space-x-1">
+                            <span>v2.8.1</span>
+                            <span>•</span>
+                            <span>120 MB</span>
+                        </div>
+                    </div>
                 </a>
                 
-                <div class="p-6 rounded-lg bg-gray-900/50 hover:bg-gray-900 transition cursor-pointer hover:scale-105 duration-300">
-                    <i class="fab fa-apple text-4xl mb-4 text-gray-300"></i>
-                    <h3 class="text-lg font-semibold mb-2">macOS</h3>
-                    <p class="text-gray-400 text-sm">Universal • DMG</p>
+                <!-- macOS Download -->
+                <div class="group p-6 rounded-xl bg-gradient-to-b from-gray-900/50 to-gray-900/80 hover:from-gray-900/70 hover:to-gray-900 transition-all duration-300 cursor-pointer relative overflow-hidden border border-gray-800 hover:border-gray-100/50 hover:shadow-lg hover:shadow-pink-900/10">
+                    <div class="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-pink-500/10 blur-xl group-hover:scale-150 transition-transform duration-500"></div>
+                    <div class="relative z-10">
+                        <i class="fab fa-apple text-5xl mb-4 text-gray-300 group-hover:text-white transition-colors"></i>
+                        <h3 class="text-xl font-semibold mb-2">macOS</h3>
+                        <p class="text-gray-400 text-sm mb-3">Universal • DMG</p>
+                        <div class="text-xs text-gray-500 flex items-center justify-center space-x-1">
+                            <span>Coming Soon</span>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="p-6 rounded-lg bg-gray-900/50 hover:bg-gray-900 transition cursor-pointer hover:scale-105 duration-300">
-                    <i class="fab fa-linux text-4xl mb-4 text-yellow-400"></i>
-                    <h3 class="text-lg font-semibold mb-2">Linux</h3>
-                    <p class="text-gray-400 text-sm">AppImage • Deb/RPM</p>
+                <!-- Linux Download -->
+                <div class="group p-6 rounded-xl bg-gradient-to-b from-gray-900/50 to-gray-900/80 hover:from-gray-900/70 hover:to-gray-900 transition-all duration-300 cursor-pointer relative overflow-hidden border border-gray-800 hover:border-yellow-500/70 hover:shadow-lg hover:shadow-yellow-900/10">
+                    <div class="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-yellow-500/10 blur-xl group-hover:scale-150 transition-transform duration-500"></div>
+                    <div class="relative z-10">
+                        <i class="fab fa-linux text-5xl mb-4 text-yellow-400 group-hover:text-yellow-300 transition-colors"></i>
+                        <h3 class="text-xl font-semibold mb-2">Linux</h3>
+                        <p class="text-gray-400 text-sm mb-3">AppImage • Deb/RPM</p>
+                        <div class="text-xs text-gray-500 flex items-center justify-center space-x-1">
+                            <span>Coming Soon</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <div class="text-gray-500 text-sm">
-                <p>FlowCross v2.8.1 • Requires PC</p>
-                <p class="mt-2">By downloading, you agree to our Terms of Service and Privacy Policy</p>
+            <div class="text-gray-500 text-sm max-w-2xl mx-auto">
+                <div class="flex items-center justify-center space-x-4 mb-4">
+                    <div class="flex items-center">
+                        <i class="fas fa-shield-alt text-green-500 mr-2"></i>
+                        <span>Virus Checked</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-bolt text-purple-500 mr-2"></i>
+                        <span>Fast Download</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-sync-alt text-blue-500 mr-2"></i>
+                        <span>Auto Updates</span>
+                    </div>
+                </div>
+                <p class="mt-4">FlowCross v2.8.1 • Requires Windows 10/11 64-bit • 4GB RAM minimum</p>
+                <p class="mt-2">By downloading, you agree to our <a href="#" class="text-gray-400 hover:text-white underline">Terms of Service</a> and <a href="#" class="text-gray-400 hover:text-white underline">Privacy Policy</a></p>
             </div>
         </div>
     </section>
@@ -533,6 +753,73 @@
                         <span>Help</span>
                     </div>
                     <i class="fas fa-chevron-right text-gray-500"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-900 rounded-lg p-6 max-w-md w-full mx-4 border border-gray-800">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold">Sign In</h3>
+                <button id="closeLoginModal" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label for="loginEmail" class="block text-sm font-medium text-gray-400 mb-1">Email or Username</label>
+                    <input type="text" id="loginEmail" name="loginEmail" required
+                           class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+                           placeholder="your@email.com or username">
+                </div>
+                <div>
+                    <label for="loginPassword" class="block text-sm font-medium text-gray-400 mb-1">Password</label>
+                    <div class="relative">
+                        <input type="password" id="loginPassword" name="loginPassword" required
+                               class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-white pr-10"
+                               placeholder="••••••••">
+                        <button type="button" id="togglePassword" class="absolute right-3 top-2.5 text-gray-400 hover:text-white">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="rememberMe" name="rememberMe" 
+                               class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-700 rounded bg-gray-800">
+                        <label for="rememberMe" class="ml-2 block text-sm text-gray-400">Remember me</label>
+                    </div>
+                    <a href="#" class="text-sm text-purple-400 hover:text-purple-300">Forgot password?</a>
+                </div>
+                <button type="submit" 
+                        class="w-full px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-md text-white font-medium hover:opacity-90 transition">
+                    Sign In
+                </button>
+            </form>
+            <div class="mt-4 text-center text-sm text-gray-400">
+                Don't have an account? 
+                <button id="switchToRegister" class="text-purple-400 hover:text-purple-300">Register</button>
+            </div>
+            <div class="mt-6">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-800"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-gray-900 text-gray-500">Or continue with</span>
+                    </div>
+                </div>
+                <div class="mt-6 grid grid-cols-2 gap-3">
+                    <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-800 rounded-md shadow-sm bg-gray-800 text-sm font-medium text-gray-300 hover:bg-gray-700">
+                        <i class="fab fa-google text-red-400"></i>
+                        <span class="ml-2">Google</span>
+                    </button>
+                    <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-800 rounded-md shadow-sm bg-gray-800 text-sm font-medium text-gray-300 hover:bg-gray-700">
+                        <i class="fab fa-microsoft text-blue-400"></i>
+                        <span class="ml-2">Microsoft</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -676,6 +963,141 @@
                 }
             });
         });
+
+        // Enhanced Login Functionality
+        const loginModal = document.getElementById('loginModal');
+        const openLoginModal = document.getElementById('openLoginModal');
+        const closeLoginModal = document.getElementById('closeLoginModal');
+        const loginForm = document.getElementById('loginForm');
+        const togglePassword = document.getElementById('togglePassword');
+        const switchToRegister = document.getElementById('switchToRegister');
+        
+        // Open login modal with animation
+        openLoginModal.addEventListener('click', () => {
+            loginModal.classList.remove('hidden');
+            setTimeout(() => {
+                loginModal.querySelector('div').classList.add('animate-fadeIn');
+            }, 10);
+            
+            // Load remembered email if exists
+            const rememberedEmail = localStorage.getItem('flowcross_remembered_email');
+            if (rememberedEmail) {
+                document.getElementById('loginEmail').value = rememberedEmail;
+                document.getElementById('rememberMe').checked = true;
+            }
+            
+            // Focus email field
+            setTimeout(() => {
+                document.getElementById('loginEmail').focus();
+            }, 100);
+        });
+
+        // Close login modal with animation
+        closeLoginModal.addEventListener('click', () => {
+            loginModal.querySelector('div').classList.remove('animate-fadeIn');
+            setTimeout(() => {
+                loginModal.classList.add('hidden');
+            }, 300);
+        });
+
+        // Toggle password visibility with better UX
+        togglePassword.addEventListener('click', function() {
+            const passwordInput = document.getElementById('loginPassword');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+            
+            // Add shake animation for better feedback
+            this.classList.add('animate-shake');
+            setTimeout(() => {
+                this.classList.remove('animate-shake');
+            }, 500);
+        });
+
+        // Switch to register form
+        switchToRegister.addEventListener('click', function() {
+            loginModal.querySelector('div').classList.remove('animate-fadeIn');
+            setTimeout(() => {
+                loginModal.classList.add('hidden');
+                registerModal.classList.remove('hidden');
+                setTimeout(() => {
+                    registerModal.querySelector('div').classList.add('animate-fadeIn');
+                }, 10);
+            }, 300);
+        });
+
+        // Enhanced login form submission
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            
+            // Show loading state
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Signing in...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Simulate API call (replace with actual fetch)
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // Save email if remember me is checked
+                if (rememberMe) {
+                    localStorage.setItem('flowcross_remembered_email', email);
+                } else {
+                    localStorage.removeItem('flowcross_remembered_email');
+                }
+                
+                // Close modal
+                loginModal.querySelector('div').classList.remove('animate-fadeIn');
+                setTimeout(() => {
+                    loginModal.classList.add('hidden');
+                }, 300);
+                
+                // Update UI to show logged in state
+                openLoginModal.innerHTML = `
+                    <span>My Account</span>
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                `;
+                openLoginModal.classList.remove('bg-gradient-to-r', 'from-purple-600', 'to-pink-600');
+                openLoginModal.classList.add('bg-gray-800', 'hover:bg-gray-700');
+                
+                // Show success notification
+                showNotification('success', 'Welcome back! You have successfully logged in.');
+                
+            } catch (error) {
+                // Show error notification
+                showNotification('error', 'Login failed. Please check your credentials.');
+            } finally {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Notification function
+        function showNotification(type, message) {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 flex items-center ${
+                type === 'success' ? 'bg-green-900/80 text-green-100' : 'bg-red-900/80 text-red-100'
+            }`;
+            notification.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} mr-3"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
 
         // Registration modal functionality
         const registerModal = document.getElementById('registerModal');
