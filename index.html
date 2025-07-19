@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="https://i.pinimg.com/736x/29/bd/96/29bd9660dd4a07617461de609b550e4c.jpg" type="image/jpg">
+    <link rel="icon" href="https://cdn.pixabay.com/photo/2025/07/19/16/22/16-22-05-729_960_720.png" type="image/jpg">
     <title>Flowcross - Премиум лаунчер для Minecraft</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/f7b393d83e.js" crossorigin="anonymous"></script>
@@ -162,7 +162,7 @@
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
-                        <img id="logo" src="https://i.pinimg.com/736x/29/bd/96/29bd9660dd4a07617461de609b550e4c.jpg" alt="Flowcross Logo" class="h-26 w-16 rounded-full mr-3">
+                        <img id="logo" src="https://cdn.pixabay.com/photo/2025/07/19/16/22/16-22-05-729_960_720.png" alt="Flowcross Logo" class="h-26 w-16 rounded-full mr-3">
                         <span class="text-xl font-bold text-gray-900 dark:text-black flex items-center">
                             <span class="mr-1">Flowcross-LLC /</span>
                             <span class="text-indigo-600 dark:text-indigo-400">Flowcross</span>
@@ -875,10 +875,10 @@
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
                 document.documentElement.classList.add('dark');
-                logo.src = 'https://i.pinimg.com/1200x/b1/aa/c5/b1aac53ac0c05445259d401667d8b49c.jpg';
+                logo.src = 'https://cdn.pixabay.com/photo/2025/07/19/16/22/16-22-05-729_960_720.png';
             } else {
                 document.documentElement.classList.remove('dark');
-                logo.src = 'https://i.pinimg.com/736x/29/bd/96/29bd9660dd4a07617461de609b550e4c.jpg';
+                logo.src = 'https://cdn.pixabay.com/photo/2025/07/19/16/22/16-22-05-729_960_720.png';
             }
         }
 
@@ -886,7 +886,7 @@
         themeToggle.addEventListener('click', () => {
             const isDark = document.documentElement.classList.toggle('dark');
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            logo.src = isDark ? 'https://i.pinimg.com/1200x/b1/aa/c5/b1aac53ac0c05445259d401667d8b49c.jpg' : 'https://i.pinimg.com/736x/29/bd/96/29bd9660dd4a07617461de609b550e4c.jpg';
+            logo.src = isDark ? 'https://cdn.pixabay.com/photo/2025/07/19/16/22/16-22-05-729_960_720.png';
             
             document.dispatchEvent(new CustomEvent('themeChanged', {
                 detail: { theme: isDark ? 'dark' : 'light' }
